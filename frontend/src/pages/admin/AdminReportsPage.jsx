@@ -198,6 +198,7 @@ function AdminReportsPage() {
               const isRunning = runningReportId === report.id;
               const isHistoryLoading = loadingHistoryId === report.id;
 
+              return (
                 <div key={report.id} className="panel-card" style={{ display: 'grid', gap: '0.8rem', padding: '1rem' }}>
                   <div>
                     <div style={{ fontWeight: 700 }}>{report.name}</div>
