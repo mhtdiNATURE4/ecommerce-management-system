@@ -18,9 +18,8 @@ export function resolveNavigation(role, signedIn) {
     return [
       { key: 'dashboard', label: 'Dashboard', to: '/admin/dashboard' },
       { key: 'orders-management', label: 'Orders Management', to: '/admin/orders' },
+      { key: 'analytics', label: 'Analytics', to: '/admin/analytics' },
       { key: 'reports', label: 'Reports', to: '/admin/reports' },
-      { key: 'recommendations', label: 'Recommendation Analytics', to: '/admin/recommendations' },
-      { key: 'segmentation', label: 'Customer Segmentation', to: '/admin/segments' },
       { key: 'logout', label: 'Logout', to: '/login', kind: 'button' }
     ];
   }

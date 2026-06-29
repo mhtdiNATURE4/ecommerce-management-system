@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { getToken } from '../services/auth';
-import AddressForm from '../components/AddressForm';
 
 function CheckoutPage() {
   const navigate = useNavigate();
@@ -13,8 +12,6 @@ function CheckoutPage() {
   const [error, setError] = useState('');
   const [placing, setPlacing] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [addressSuccess, setAddressSuccess] = useState('');
-  const [isAddressFormOpen, setIsAddressFormOpen] = useState(false);
 
   const isAuthenticated = Boolean(getToken());
 
@@ -66,13 +63,6 @@ function CheckoutPage() {
       isMounted = false;
     };
   }, [isAuthenticated, navigate]);
-
-  function handleAddressAdded(createdAddress) {
-    setAddresses((prev) => [...prev, createdAddress]);
-    setSelectedAddressId(String(createdAddress.id));
-    setAddressSuccess('Shipping address saved successfully.');
-    setIsAddressFormOpen(false);
-  }
 
   async function handlePlaceOrder() {
     if (!selectedAddressId) {
@@ -160,26 +150,13 @@ function CheckoutPage() {
         <div style={{ marginBottom: '1.5rem' }}>
           <h3 className="section-title" style={{ marginTop: 0, marginBottom: '0.75rem' }}>Delivery Details</h3>
           <div className="panel-card" style={{ padding: '1rem', display: 'grid', gap: '1rem' }}>
-            <button
-              type="button"
-              onClick={() => setIsAddressFormOpen((prev) => !prev)}
-              className="btn btn-secondary"
-              style={{ width: '100%', justifyContent: 'space-between', display: 'flex' }}
-            >
-              <span>Add a new shipping address</span>
-              <span>{isAddressFormOpen ? '−' : '+'}</span>
-            </button>
-
-            {isAddressFormOpen ? (
-              <div>
-                {addressSuccess ? <div className="status-message status-success" style={{ marginBottom: '0.75rem' }}>{addressSuccess}</div> : null}
-                <AddressForm onAddressAdded={handleAddressAdded} submitLabel="Save Address" />
-              </div>
-            ) : null}
-
             <div>
               <h3 className="section-title" style={{ marginTop: 0, marginBottom: '0.75rem' }}>Shipping Address</h3>
-              {addresses.length === 0 ? null : (
+              {addresses.length === 0 ? (
+                <div className="status-message status-info">
+                  No saved addresses yet. Add one from the Addresses page before checkout.
+                </div>
+              ) : (
                 <label className="form-field">
                   <span className="muted">Select delivery address</span>
                   <select

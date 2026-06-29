@@ -15,8 +15,7 @@ import OrdersPage from './pages/OrdersPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import AdminReportsPage from './pages/admin/AdminReportsPage';
-import CustomerSegmentationPage from './pages/admin/CustomerSegmentationPage';
-import RecommendationAnalyticsPage from './pages/admin/RecommendationAnalyticsPage';
+import AnalyticsPage from './pages/admin/AnalyticsPage';
 
 function App() {
   return (
@@ -44,9 +43,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
             <Route path="/admin/reports" element={<AdminReportsPage />} />
-            <Route path="/admin/segments" element={<CustomerSegmentationPage />} />
-            <Route path="/admin/segmentation" element={<Navigate to="/admin/segments" replace />} />
-            <Route path="/admin/recommendations" element={<RecommendationAnalyticsPage />} />
+            <Route path="/admin/analytics" element={<AnalyticsPage />} />
           </Route>
         </Route>
 

@@ -28,27 +28,29 @@ function AdminLayout() {
             </div>
           </div>
 
-          <nav className="header-nav admin-nav">
-            {navigation.map((item) => {
-              if (item.kind === 'button') {
-                return (
-                  <button key={item.key} type="button" onClick={handleLogout} className="nav-link nav-link-button admin-logout-button">
-                    {item.label}
-                  </button>
-                );
-              }
+          <div className="header-actions">
+            <nav className="header-nav admin-nav">
+              {navigation.map((item) => {
+                if (item.kind === 'button') {
+                  return (
+                    <button key={item.key} type="button" onClick={handleLogout} className="nav-link nav-link-button admin-logout-button">
+                      {item.label}
+                    </button>
+                  );
+                }
 
-              return (
-                <NavLink
-                  key={item.key}
-                  to={item.to}
-                  className={({ isActive }) => `nav-link admin-nav-link ${isActive ? 'active' : ''}`}
-                >
-                  {item.label}
-                </NavLink>
-              );
-            })}
-          </nav>
+                return (
+                  <NavLink
+                    key={item.key}
+                    to={item.to}
+                    className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                  >
+                    {item.label}
+                  </NavLink>
+                );
+              })}
+            </nav>
+          </div>
         </div>
       </header>
 
