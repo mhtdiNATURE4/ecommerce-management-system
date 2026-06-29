@@ -1,54 +1,96 @@
--- V2: seed categories and products
+-- V2: seed categories only
 
 INSERT INTO categories (name) VALUES ('Electronics') ON DUPLICATE KEY UPDATE name=name;
 INSERT INTO categories (name) VALUES ('Books') ON DUPLICATE KEY UPDATE name=name;
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
+-- =========================
+-- 5 Electronic Products
+-- =========================
+INSERT INTO products
+(name, description, price, stock, image_url, category_id, version)
 VALUES
-('Mechanical Keyboard', 'Premium mechanical keyboard with tactile switches for fast, precise typing.', 129.99, 48, 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Electronics'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('iPhone 15 Pro',
+ 'Apple smartphone with A17 Pro chip and 256GB storage',
+ 1199.99,
+ 25,
+ '/images/products/iphone15pro.jpg',
+ 1,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('Bluetooth Headphones', 'Over-ear wireless headphones with immersive sound and all-day comfort.', 149.50, 62, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Electronics'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Samsung Galaxy S24',
+ 'Samsung flagship smartphone with AMOLED display',
+ 999.99,
+ 30,
+ '/images/products/galaxys24.jpg',
+ 1,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('USB-C Hub', 'Compact multi-port hub with HDMI, USB 3.0, and power delivery support.', 79.99, 85, 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Electronics'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Sony WH-1000XM5',
+ 'Noise cancelling wireless headphones',
+ 399.99,
+ 40,
+ '/images/products/sonyxm5.jpg',
+ 1,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('Portable SSD (1TB)', 'Fast and reliable portable SSD designed for file backups and on-the-go productivity.', 109.99, 37, 'https://images.unsplash.com/photo-1587202372775-e229f172b8d1?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Electronics'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Dell XPS 15',
+ 'High-performance laptop with Intel Core i7',
+ 1799.99,
+ 15,
+ '/images/products/dellxps15.jpg',
+ 1,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('Full HD Webcam', 'High-definition webcam with built-in microphone for video calls and streaming.', 89.00, 54, 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Electronics'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Apple Watch Series 9',
+ 'Smartwatch with health and fitness tracking',
+ 499.99,
+ 20,
+ '/images/products/applewatch9.jpg',
+ 1,
+ 0);
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
+-- =========================
+-- 5 Book Products
+-- =========================
+INSERT INTO products
+(name, description, price, stock, image_url, category_id, version)
 VALUES
-('The Pragmatic Programmer', 'A classic guide to practical software development and engineering excellence.', 45.50, 29, 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Books'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Clean Code',
+ 'A handbook of agile software craftsmanship by Robert C. Martin',
+ 39.99,
+ 50,
+ '/images/products/cleancode.jpg',
+ 2,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('Design Patterns', 'An essential reference for building flexible and maintainable object-oriented software.', 39.99, 73, 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Books'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Effective Java',
+ 'Best practices for Java programming by Joshua Bloch',
+ 45.99,
+ 35,
+ '/images/products/effectivejava.jpg',
+ 2,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('Introduction to Algorithms', 'Comprehensive coverage of fundamental algorithms and data structures for students and professionals.', 59.99, 41, 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Books'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Spring in Action',
+ 'Comprehensive guide to Spring Framework',
+ 49.99,
+ 28,
+ '/images/products/springinaction.jpg',
+ 2,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('Atomic Habits', 'A practical framework for building good habits and breaking bad ones.', 24.95, 67, 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Books'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('Design Patterns',
+ 'Elements of reusable object-oriented software',
+ 54.99,
+ 18,
+ '/images/products/designpatterns.jpg',
+ 2,
+ 0),
 
-INSERT INTO products (name, description, price, stock, image_url, category_id)
-VALUES
-('Deep Work', 'A focused guide to producing high-quality work in a distracted world.', 21.99, 58, 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80', (SELECT id FROM categories WHERE name='Books'))
-ON DUPLICATE KEY UPDATE description=VALUES(description), price=VALUES(price), stock=VALUES(stock), image_url=VALUES(image_url), category_id=VALUES(category_id);
+('The Pragmatic Programmer',
+ 'Journey to mastery for modern software developers',
+ 42.99,
+ 40,
+ '/images/products/pragmaticprogrammer.jpg',
+ 2,
+ 0);
