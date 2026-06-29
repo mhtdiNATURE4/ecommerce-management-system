@@ -273,7 +273,7 @@ function AdminOrdersPage() {
                         <div className="muted">No items available for this order.</div>
                       )}
 
-                      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #e5e7eb', paddingTop: '0.75rem' }}>
+                      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '0.75rem' }}>
                         <span style={{ fontWeight: 700 }}>Order Total</span>
                         <strong>${subtotal.toFixed(2)}</strong>
                       </div>
