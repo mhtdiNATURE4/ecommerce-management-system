@@ -222,7 +222,7 @@ function ProductDetailsPage() {
                   >
                     {isOutOfStock ? 'Out of Stock' : isAdding ? 'Adding...' : 'Add to Cart'}
                   </button>
-                  {isOutOfStock ? <span style={{ color: '#b91c1c', fontWeight: 600 }}>Out of Stock</span> : null}
+                  {isOutOfStock ? <span style={{ color: 'var(--error-text)', fontWeight: 600 }}>Out of Stock</span> : null}
                 </div>
               ) : null}
               {cartMessage ? <div className="status-message status-success">{cartMessage}</div> : null}

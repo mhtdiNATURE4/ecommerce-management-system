@@ -17,14 +17,6 @@ function getStatusBadgeStyle(status) {
       return { background: 'var(--success-bg)', color: 'var(--success-text)' };
     case 'CANCELLED':
       return { background: 'var(--error-bg)', color: 'var(--error-text)' };
-    case 'PENDING':
-      return { background: 'var(--neutral-bg)', color: 'var(--neutral-text)' };
-    case 'CONFIRMED':
-      return { background: 'var(--info-bg)', color: 'var(--info-text)' };
-    case 'SHIPPED':
-      return { background: 'var(--warning-bg)', color: 'var(--warning-text)' };
-    case 'DELIVERED':
-      return { background: 'var(--success-bg)', color: 'var(--success-text)' };
     default:
       return { background: 'var(--secondary)', color: 'var(--text)' };
   }
@@ -252,10 +244,10 @@ function AdminOrdersPage() {
                     Shipping address: {order.shippingAddress ? `${order.shippingAddress.street}, ${order.shippingAddress.city}, ${order.shippingAddress.country}${order.shippingAddress.zipCode ? `, ${order.shippingAddress.zipCode}` : ''}` : 'N/A'}
                   </div>
 
-                  <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
-                    <button type="button" onClick={() => setExpandedOrderId((prev) => prev === order.id ? null : order.id)} className="btn btn-secondary">
-                      {expandedOrderId === order.id ? 'Hide details' : 'View details'}
-                    </button>
+                      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', borderTop: '1px solid var(--border)', paddingTop: '0.75rem' }}>
+                        <span style={{ fontWeight: 700 }}>Order Total</span>
+                        <strong>${subtotal.toFixed(2)}</strong>
+                      </div>
                     {renderActions(order)}
                   </div>
 

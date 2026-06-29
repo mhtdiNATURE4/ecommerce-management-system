@@ -66,14 +66,9 @@ function OrdersPage() {
 
     switch (normalizedStatus) {
       case 'CREATED':
-      case 'PENDING':
         return { background: 'var(--neutral-bg)', color: 'var(--neutral-text)' };
       case 'PROCESSING':
-      case 'CONFIRMED':
         return { background: 'var(--info-bg)', color: 'var(--info-text)' };
-      case 'SHIPPED':
-        return { background: 'var(--warning-bg)', color: 'var(--warning-text)' };
-      case 'DELIVERED':
       case 'COMPLETED':
         return { background: 'var(--success-bg)', color: 'var(--success-text)' };
       case 'CANCELLED':
