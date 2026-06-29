@@ -249,7 +249,6 @@ function AdminOrdersPage() {
                         <strong>${subtotal.toFixed(2)}</strong>
                       </div>
                     {renderActions(order)}
-                  </div>
 
                   {expandedOrderId === order.id ? (
                     <div className="panel panel-padding" style={{ marginTop: '1rem' }}>
