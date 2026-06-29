@@ -1,0 +1,139 @@
+# === Node / Next.js ===
+node_modules/
+.npm/
+.yarn/*
+.pnp.*
+.next/
+out/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# === Java / Maven ===
+# Maven build directory
+target/
+**/target/
+# Compiled classes and archives
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven surefire and reports
+surefire-reports/
+
+# Generated sources
+generated-sources/
+generated-test-sources/
+
+# IDE / Editor directories and files
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Coverage
+coverage/
+*.lcov
+
+# Docker
+docker-compose.override.yml
+
+# Keys, secrets, and certificates
+*.pem
+*.key
+*.p12
+
+# Misc
+.cache/
+.parcel-cache/
+.pytest_cache/
+
+# Ignore build artifacts at repository root and submodules
+/target/
+/build/
+/dist/
+# =========================
+# Dependencies
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Next.js
+# =========================
+.next/
+out/
+dist/
+
+# Optional cache
+.cache/
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Editor / IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Testing
+# =========================
+coverage/
+
+# =========================
+# Zustand / local storage (optional safety)
+# =========================
+*.localstorage
+
+# =========================
+# Misc
+# =========================
+.vercel/
