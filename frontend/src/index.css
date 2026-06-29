@@ -316,12 +316,7 @@ main {
 .nav-link.active {
   background: rgba(17, 24, 39, 0.08);
   font-weight: 700;
-}
-
-.admin-title-group {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.06);
 }
 
 .admin-nav {
@@ -342,6 +337,7 @@ main {
   padding: 0.45rem 0.75rem;
   border-radius: 8px;
   margin-left: 0.35rem;
+  box-shadow: none;
 }
 
 .nav-link-button {

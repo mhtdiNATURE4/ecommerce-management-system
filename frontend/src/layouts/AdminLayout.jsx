@@ -22,13 +22,12 @@ function AdminLayout() {
         <div className="header-inner">
           <div className="header-brand">
             <img className="header-logo" src="/favicon.svg" alt="iStore logo" />
-            <div className="admin-title-group">
-              <h1>Admin Panel</h1>
-              <span className="admin-badge">Admin</span>
-            </div>
+            <h1>Admin Panel</h1>
+            <span className="admin-badge">Admin</span>
           </div>
 
           <div className="header-actions">
+            <p className="header-greeting">Management workspace</p>
             <nav className="header-nav admin-nav">
               {navigation.map((item) => {
                 if (item.kind === 'button') {
