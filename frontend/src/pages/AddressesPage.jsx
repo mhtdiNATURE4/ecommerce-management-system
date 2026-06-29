@@ -2,20 +2,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { getToken } from '../services/auth';
+import AddressForm from '../components/AddressForm';
 
 function AddressesPage() {
   const navigate = useNavigate();
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [form, setForm] = useState({
-    street: '',
-    city: '',
-    country: '',
-    zipCode: ''
-  });
 
   useEffect(() => {
     if (!getToken()) {
@@ -52,38 +46,10 @@ function AddressesPage() {
     };
   }, [navigate]);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!form.street.trim() || !form.city.trim() || !form.country.trim()) {
-      setError('Please fill in the street, city, and country.');
-      return;
-    }
-
-    setSubmitting(true);
+  function handleAddressAdded(createdAddress) {
+    setAddresses((prev) => [...prev, createdAddress]);
     setError('');
-    setSuccess('');
-
-    try {
-      const createdAddress = await api.post('/addresses', {
-        street: form.street.trim(),
-        city: form.city.trim(),
-        country: form.country.trim(),
-        zipCode: form.zipCode.trim()
-      });
-
-      setAddresses((prev) => [...prev, createdAddress]);
-      setForm({ street: '', city: '', country: '', zipCode: '' });
-      setSuccess('Address saved successfully.');
-    } catch (err) {
-      setError(err?.message || 'Unable to save your address.');
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  function updateField(field, value) {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setSuccess('Address saved successfully.');
   }
 
   return (
@@ -105,27 +71,9 @@ function AddressesPage() {
 
         <h3 className="section-title" style={{ marginTop: 0 }}>Add New Address</h3>
 
-        <form onSubmit={handleSubmit} className="stack-sm" style={{ marginBottom: '1.5rem' }}>
-          <label className="form-field">
-            <span className="muted">Street</span>
-            <input type="text" placeholder="Street" value={form.street} onChange={(e) => updateField('street', e.target.value)} className="form-control" required />
-          </label>
-          <label className="form-field">
-            <span className="muted">City</span>
-            <input type="text" placeholder="City" value={form.city} onChange={(e) => updateField('city', e.target.value)} className="form-control" required />
-          </label>
-          <label className="form-field">
-            <span className="muted">Country</span>
-            <input type="text" placeholder="Country" value={form.country} onChange={(e) => updateField('country', e.target.value)} className="form-control" required />
-          </label>
-          <label className="form-field">
-            <span className="muted">Postal Code</span>
-            <input type="text" placeholder="Postal Code" value={form.zipCode} onChange={(e) => updateField('zipCode', e.target.value)} className="form-control" />
-          </label>
-          <button type="submit" disabled={submitting} className="btn btn-primary">
-            {submitting ? 'Saving...' : 'Add Address'}
-          </button>
-        </form>
+        <div style={{ marginBottom: '1.5rem' }}>
+          <AddressForm onAddressAdded={handleAddressAdded} submitLabel="Add Address" />
+        </div>
       </section>
 
       <section className="panel panel-padding">

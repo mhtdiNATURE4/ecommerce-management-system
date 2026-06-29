@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { getToken } from '../services/auth';
+import AddressForm from '../components/AddressForm';
 
 function CheckoutPage() {
   const navigate = useNavigate();
@@ -12,9 +13,6 @@ function CheckoutPage() {
   const [error, setError] = useState('');
   const [placing, setPlacing] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [addressForm, setAddressForm] = useState({ street: '', city: '', country: '', zipCode: '' });
-  const [addressSubmitting, setAddressSubmitting] = useState(false);
-  const [addressError, setAddressError] = useState('');
   const [addressSuccess, setAddressSuccess] = useState('');
   const [isAddressFormOpen, setIsAddressFormOpen] = useState(false);
 
@@ -69,37 +67,11 @@ function CheckoutPage() {
     };
   }, [isAuthenticated, navigate]);
 
-  async function handleAddShippingAddress(event) {
-    event.preventDefault();
-
-    if (!addressForm.street.trim() || !addressForm.city.trim() || !addressForm.country.trim()) {
-      setAddressError('Please fill in the street, city, and country.');
-      return;
-    }
-
-    setAddressSubmitting(true);
-    setAddressError('');
-    setAddressSuccess('');
-
-    try {
-      const createdAddress = await api.post('/addresses', {
-        street: addressForm.street.trim(),
-        city: addressForm.city.trim(),
-        country: addressForm.country.trim(),
-        zipCode: addressForm.zipCode.trim()
-      });
-
-      const updatedAddresses = [...addresses, createdAddress];
-      setAddresses(updatedAddresses);
-      setSelectedAddressId(String(createdAddress.id));
-      setAddressForm({ street: '', city: '', country: '', zipCode: '' });
-      setAddressSuccess('Shipping address saved successfully.');
-      setIsAddressFormOpen(false);
-    } catch (err) {
-      setAddressError(err?.message || 'Unable to save your address. Please try again.');
-    } finally {
-      setAddressSubmitting(false);
-    }
+  function handleAddressAdded(createdAddress) {
+    setAddresses((prev) => [...prev, createdAddress]);
+    setSelectedAddressId(String(createdAddress.id));
+    setAddressSuccess('Shipping address saved successfully.');
+    setIsAddressFormOpen(false);
   }
 
   async function handlePlaceOrder() {
@@ -200,29 +172,8 @@ function CheckoutPage() {
 
             {isAddressFormOpen ? (
               <div>
-                {addressError ? <div className="status-message status-error" style={{ marginBottom: '0.75rem' }}>{addressError}</div> : null}
                 {addressSuccess ? <div className="status-message status-success" style={{ marginBottom: '0.75rem' }}>{addressSuccess}</div> : null}
-                <form onSubmit={handleAddShippingAddress} className="stack-sm">
-                  <label className="form-field">
-                    <span className="muted">Street</span>
-                    <input type="text" value={addressForm.street} onChange={(e) => setAddressForm((prev) => ({ ...prev, street: e.target.value }))} className="form-control" placeholder="Street" />
-                  </label>
-                  <label className="form-field">
-                    <span className="muted">City</span>
-                    <input type="text" value={addressForm.city} onChange={(e) => setAddressForm((prev) => ({ ...prev, city: e.target.value }))} className="form-control" placeholder="City" />
-                  </label>
-                  <label className="form-field">
-                    <span className="muted">Country</span>
-                    <input type="text" value={addressForm.country} onChange={(e) => setAddressForm((prev) => ({ ...prev, country: e.target.value }))} className="form-control" placeholder="Country" />
-                  </label>
-                  <label className="form-field">
-                    <span className="muted">Postal Code</span>
-                    <input type="text" value={addressForm.zipCode} onChange={(e) => setAddressForm((prev) => ({ ...prev, zipCode: e.target.value }))} className="form-control" placeholder="Postal Code" />
-                  </label>
-                  <button type="submit" disabled={addressSubmitting} className="btn btn-secondary">
-                    {addressSubmitting ? 'Saving...' : 'Save Address'}
-                  </button>
-                </form>
+                <AddressForm onAddressAdded={handleAddressAdded} submitLabel="Save Address" />
               </div>
             ) : null}
 
