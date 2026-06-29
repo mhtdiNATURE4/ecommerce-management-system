@@ -60,13 +60,13 @@ function AdminDashboardPage() {
     const processingCount = orders.filter((order) => String(order.status || '').toUpperCase() === 'PROCESSING').length;
 
     return [
-      { label: 'Total Products', value: dashboard.totalProducts ?? 'N/A' },
-      { label: 'Total Customers', value: dashboard.totalUsers ?? 'N/A' },
-      { label: 'Total Orders', value: dashboard.totalOrders ?? 'N/A' },
-      { label: 'Total Revenue', value: dashboard.totalRevenue != null ? `$${Number(dashboard.totalRevenue).toFixed(2)}` : 'N/A' },
-      { label: 'Orders in CREATED', value: createdCount },
-      { label: 'Orders in PROCESSING', value: processingCount },
-      { label: 'Low-stock products', value: lowStockProducts.length }
+      { label: 'Total Products', value: dashboard.totalProducts ?? 'N/A', icon: '📦' },
+      { label: 'Total Customers', value: dashboard.totalUsers ?? 'N/A', icon: '👥' },
+      { label: 'Total Orders', value: dashboard.totalOrders ?? 'N/A', icon: '🛒' },
+      { label: 'Total Revenue', value: dashboard.totalRevenue != null ? `$${Number(dashboard.totalRevenue).toFixed(2)}` : 'N/A', icon: '💰' },
+      { label: 'Orders in CREATED', value: createdCount, icon: '📝' },
+      { label: 'Orders in PROCESSING', value: processingCount, icon: '⚙️' },
+      { label: 'Low-stock products', value: lowStockProducts.length, icon: '⚠️' }
     ];
   }, [dashboard, orders, lowStockProducts]);
 
@@ -130,10 +130,13 @@ function AdminDashboardPage() {
                 borderRadius: '0 12px 12px 0'
               }}
             >
-              <div className="muted" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                {metric.label}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', marginBottom: '0.35rem' }}>
+                <span style={{ fontSize: '1.1rem' }}>{metric.icon}</span>
+                <div className="muted" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  {metric.label}
+                </div>
               </div>
-              <div style={{ fontSize: '2rem', fontWeight: 700, marginTop: '0.35rem' }}>{metric.value}</div>
+              <div style={{ fontSize: '2rem', fontWeight: 700 }}>{metric.value}</div>
             </div>
           ))}
         </div>
@@ -148,11 +151,16 @@ function AdminDashboardPage() {
         ) : (
           <div className="stack-sm">
             {lowStockProducts.map((product) => (
-              <div key={product.id} className="panel-card" style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <div style={{ fontWeight: 600 }}>{product.name}</div>
-                  <div className="muted" style={{ fontSize: '0.85rem', marginTop: '0.2rem' }}>
-                    {product.category || product.id || 'Inventory item'}
+              <div key={product.id} className="panel-card" style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--surface-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
+                    ⚠️
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 600 }}>{product.name}</div>
+                    <div className="muted" style={{ fontSize: '0.85rem', marginTop: '0.2rem' }}>
+                      {product.category || product.id || 'Inventory item'}
+                    </div>
                   </div>
                 </div>
                 <span style={{ background: 'var(--error-bg)', color: 'var(--error-text)', borderRadius: '999px', padding: '0.2rem 0.65rem', fontSize: '0.8rem', fontWeight: 700 }}>

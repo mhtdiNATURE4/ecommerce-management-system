@@ -7,6 +7,7 @@ function AnalyticsPage() {
   const navigate = useNavigate();
   const [recommendations, setRecommendations] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -23,15 +24,17 @@ function AnalyticsPage() {
       setError('');
 
       try {
-        const [recommendationData, customerData] = await Promise.all([
+        const [recommendationData, customerData, productData] = await Promise.all([
           api.get('/recommendations'),
-          api.get('/admin/segments')
+          api.get('/admin/segments'),
+          api.get('/products').catch(() => [])
         ]);
 
         if (!isMounted) return;
 
         setRecommendations(Array.isArray(recommendationData) ? recommendationData : []);
         setCustomers(Array.isArray(customerData) ? customerData : []);
+        setProducts(Array.isArray(productData) ? productData : []);
       } catch (err) {
         if (isMounted) {
           setError(err?.message || 'Unable to load analytics data.');
@@ -92,16 +95,34 @@ function AnalyticsPage() {
     ];
   }, [customers]);
 
+  const productLookup = useMemo(() => {
+    const lookup = new Map();
+
+    products.forEach((product) => {
+      if (product?.name) {
+        lookup.set(normalizeProductName(product.name), product);
+      }
+    });
+
+    return lookup;
+  }, [products]);
+
   const topRecommendations = useMemo(() => {
     return [...recommendations]
       .map((rule) => ({
         productName: rule?.productName || 'Unknown product',
-        recommendations: Array.isArray(rule?.recommendations) ? rule.recommendations : [],
+        productImage: getProductImage(rule?.productName, productLookup),
+        recommendations: Array.isArray(rule?.recommendations)
+          ? rule.recommendations.map((item) => ({
+              ...item,
+              productImage: getProductImage(item?.productName, productLookup)
+            }))
+          : [],
         bestScore: getBestScore(rule?.recommendations || [])
       }))
       .sort((a, b) => (b.bestScore ?? -1) - (a.bestScore ?? -1))
       .slice(0, 5);
-  }, [recommendations]);
+  }, [recommendations, productLookup]);
 
   const topCustomers = useMemo(() => {
     return [...customers]
@@ -170,13 +191,35 @@ function AnalyticsPage() {
                 </tr>
               </thead>
               <tbody>
-                {topRecommendations.map((rule) => {
+                {topRecommendations.map((rule, index) => {
                   const topItem = rule.recommendations[0];
                   return (
-                    <tr key={rule.productName}>
-                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>{rule.productName}</td>
+                    <tr key={`${rule.productName}-${index}`}>
                       <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
-                        {rule.recommendations.length === 0 ? '—' : rule.recommendations.map((item) => item?.productName || 'Unknown').join(', ')}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                          <img
+                            src={rule.productImage || 'https://picsum.photos/seed/default/600/400'}
+                            alt={rule.productName}
+                            style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px' }}
+                          />
+                          <span>{rule.productName}</span>
+                        </div>
+                      </td>
+                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
+                        {rule.recommendations.length === 0 ? '—' : (
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                            {rule.recommendations.map((item, itemIndex) => (
+                              <div key={`${item?.productName || 'recommendation'}-${itemIndex}`} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.55rem', background: 'var(--surface-muted)', borderRadius: '999px' }}>
+                                <img
+                                  src={item.productImage || 'https://picsum.photos/seed/default/600/400'}
+                                  alt={item?.productName || 'Recommended product'}
+                                  style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px' }}
+                                />
+                                <span>{item?.productName || 'Unknown'}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </td>
                       <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
                         {topItem?.score != null ? Number(topItem.score).toFixed(2) : '—'}
@@ -219,7 +262,16 @@ function AnalyticsPage() {
                   const segment = normalizeSegment(customer.segment);
                   return (
                     <tr key={customer.userId ?? `${customer.name}-${customer.totalSpent}`}>
-                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>{customer.name || 'Unknown customer'}</td>
+                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                          <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700, fontSize: '1.1rem' }}>
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+                              <path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.2c-3.3 0-9.9 1.7-9.9 5v1.1c0 .6.5 1.1 1.1 1.1h17.6c.6 0 1.1-.5 1.1-1.1v-1.1c0-3.3-6.6-5-9.9-5z" />
+                            </svg>
+                          </div>
+                          <span>{customer.name || 'Unknown customer'}</span>
+                        </div>
+                      </td>
                       <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>{customer.email || '—'}</td>
                       <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>${Number(customer.totalSpent || 0).toFixed(2)}</td>
                       <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
@@ -244,6 +296,15 @@ function getBestScore(recommendations) {
     const score = Number(item?.score ?? -1);
     return Number.isFinite(score) && score > bestScore ? score : bestScore;
   }, -1);
+}
+
+function getProductImage(productName, productLookup) {
+  const matchedProduct = productLookup.get(normalizeProductName(productName));
+  return matchedProduct?.imageUrl || 'https://picsum.photos/seed/default/600/400';
+}
+
+function normalizeProductName(productName) {
+  return String(productName || '').trim().toLowerCase();
 }
 
 function normalizeSegment(segment) {
