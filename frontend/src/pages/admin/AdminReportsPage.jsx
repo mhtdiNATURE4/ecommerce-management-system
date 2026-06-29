@@ -59,10 +59,14 @@ function AdminReportsPage() {
   }, [navigate]);
 
   const filteredReports = useMemo(() => {
-    if (filter === 'Active Reports') {
-      return reports.filter((report) => report.enabled);
-    }
-    return reports;
+    const baseReports = filter === 'Active Reports'
+      ? reports.filter((report) => report.enabled)
+      : reports;
+
+    return baseReports.filter((report) => {
+      const reportName = String(report?.name || '').trim().toLowerCase();
+      return reportName !== 'customer segmentation report';
+    });
   }, [reports, filter]);
 
   async function handleRunReport(report) {
