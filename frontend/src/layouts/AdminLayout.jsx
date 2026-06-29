@@ -56,7 +56,7 @@ function AdminLayout() {
         <Outlet />
       </main>
 
-      <footer style={{ padding: '1rem', borderTop: '1px solid #ddd', background: '#fff' }}>
+      <footer style={{ padding: '1rem', borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
         <p>Administrative tools.</p>
       </footer>
     </div>

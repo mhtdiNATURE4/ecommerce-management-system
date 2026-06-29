@@ -71,5 +71,18 @@ export function getUserName() {
 
 export function isAdminAuthenticated() {
   const role = getUserRole();
-  return role === 'ADMIN' || role === 'ROLE_ADMIN' || role === 'admin' || role === 'role_admin';
+  return isRoleAdmin(role);
+}
+
+export function normalizeRoleName(r) {
+  if (!r && r !== 0) return '';
+  return String(r).toUpperCase().replace(/^ROLE_/, '').replace(/^ROLE-/, '');
+}
+
+export function isRoleMatch(candidate, role) {
+  return normalizeRoleName(candidate) === normalizeRoleName(role);
+}
+
+export function isRoleAdmin(role) {
+  return normalizeRoleName(role) === 'ADMIN';
 }

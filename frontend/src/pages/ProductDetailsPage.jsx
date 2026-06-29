@@ -238,7 +238,15 @@ function ProductDetailsPage() {
         {!isAuthenticated ? (
           <p className="muted">Log in to receive personalized recommendations.</p>
         ) : recommendationsLoading ? (
-          <p className="muted">Loading recommendations...</p>
+          <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="panel-card" style={{ display: 'grid', gap: '0.6rem', padding: '0.9rem' }}>
+                <div className="skeleton" style={{ height: '140px', borderRadius: '8px' }} />
+                <div className="skeleton skeleton-title" style={{ width: '60%' }} />
+                <div className="skeleton skeleton-text" style={{ width: '40%' }} />
+              </div>
+            ))}
+          </div>
         ) : recommendations.length > 0 ? (
           <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
             {recommendations.map((item) => (

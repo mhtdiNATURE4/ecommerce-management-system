@@ -10,13 +10,21 @@ function getStatusBadgeStyle(status) {
 
   switch (normalized) {
     case 'CREATED':
-      return { background: 'var(--secondary)', color: 'var(--text)' };
+      return { background: 'var(--neutral-bg)', color: 'var(--neutral-text)' };
     case 'PROCESSING':
-      return { background: '#dbeafe', color: '#1e40af' };
+      return { background: 'var(--info-bg)', color: 'var(--info-text)' };
     case 'COMPLETED':
       return { background: 'var(--success-bg)', color: 'var(--success-text)' };
     case 'CANCELLED':
       return { background: 'var(--error-bg)', color: 'var(--error-text)' };
+    case 'PENDING':
+      return { background: 'var(--neutral-bg)', color: 'var(--neutral-text)' };
+    case 'CONFIRMED':
+      return { background: 'var(--info-bg)', color: 'var(--info-text)' };
+    case 'SHIPPED':
+      return { background: 'var(--warning-bg)', color: 'var(--warning-text)' };
+    case 'DELIVERED':
+      return { background: 'var(--success-bg)', color: 'var(--success-text)' };
     default:
       return { background: 'var(--secondary)', color: 'var(--text)' };
   }
@@ -117,7 +125,7 @@ function AdminOrdersPage() {
 
     return (
       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-        {status === 'CREATED' ? (
+        {(status === 'CREATED' || status === 'PENDING') ? (
           <>
             <button type="button" disabled={isBusy} onClick={() => handleTransition(order.id, 'process')} className="btn btn-primary">
               {isBusy ? 'Working...' : 'Start Processing'}
@@ -128,13 +136,21 @@ function AdminOrdersPage() {
           </>
         ) : null}
 
-        {status === 'PROCESSING' ? (
+        {(status === 'PROCESSING' || status === 'CONFIRMED') ? (
           <>
             <button type="button" disabled={isBusy} onClick={() => handleTransition(order.id, 'complete')} className="btn btn-primary">
               {isBusy ? 'Working...' : 'Complete'}
             </button>
             <button type="button" disabled={isBusy} onClick={() => handleTransition(order.id, 'cancel')} className="btn btn-secondary">
               {isBusy ? 'Working...' : 'Cancel'}
+            </button>
+          </>
+        ) : null}
+
+        {status === 'SHIPPED' ? (
+          <>
+            <button type="button" disabled={isBusy} onClick={() => handleTransition(order.id, 'complete')} className="btn btn-primary">
+              {isBusy ? 'Working...' : 'Mark as Delivered'}
             </button>
           </>
         ) : null}

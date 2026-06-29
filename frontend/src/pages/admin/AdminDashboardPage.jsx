@@ -169,6 +169,7 @@ function AdminDashboardPage() {
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <Link to="/admin/orders" className="btn btn-primary">View All Orders</Link>
           <Link to="/admin/reports" className="btn btn-secondary">View Reports</Link>
+          <Link to="/admin/recommendations" className="btn btn-secondary">Recommendation Analytics</Link>
           <Link to="/admin/segments" className="btn btn-secondary">Customer Segments</Link>
         </div>
       </section>

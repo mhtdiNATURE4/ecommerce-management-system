@@ -1,14 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { getUserRole } from '../services/auth';
+import { getUserRole, isRoleMatch } from '../services/auth';
 
 function RoleRoute({ allowedRoles, redirectTo = '/login' }) {
   const role = getUserRole();
 
-  const isAllowed = allowedRoles.some((candidate) => {
-    const normalized = String(candidate || '').toUpperCase();
-    const current = String(role || '').toUpperCase();
-    return current === normalized || current === `ROLE_${normalized}`;
-  });
+  const isAllowed = allowedRoles.some((candidate) => isRoleMatch(candidate, role));
 
   if (!role) {
     return <Navigate to={redirectTo} replace />;

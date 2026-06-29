@@ -1,3 +1,5 @@
+import { getToken } from './auth';
+
 const API_BASE_URL = '/api';
 
 async function request(path, options = {}) {
@@ -6,7 +8,7 @@ async function request(path, options = {}) {
     ...(options.headers || {})
   };
 
-  const token = localStorage.getItem('ecommerce_token');
+  const token = getToken();
   const normalizedToken = typeof token === 'string' ? token.trim() : '';
   const isJwtLike = normalizedToken && normalizedToken.split('.').length === 3;
 

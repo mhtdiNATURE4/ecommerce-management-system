@@ -256,8 +256,8 @@ function RecommendationAnalyticsPage() {
                           fontSize: '0.8rem',
                           fontWeight: 700,
                           display: 'inline-block',
-                          background: Number(topRecommendation.score) >= 0.7 ? '#dcfce7' : Number(topRecommendation.score) >= 0.4 ? '#fef9c3' : '#fee2e2',
-                          color: Number(topRecommendation.score) >= 0.7 ? '#166534' : Number(topRecommendation.score) >= 0.4 ? '#854d0e' : '#b91c1c'
+                            background: Number(topRecommendation.score) >= 0.7 ? 'var(--success-bg)' : Number(topRecommendation.score) >= 0.4 ? 'var(--warning-bg)' : 'var(--error-bg)',
+                            color: Number(topRecommendation.score) >= 0.7 ? 'var(--success-text)' : Number(topRecommendation.score) >= 0.4 ? 'var(--warning-text)' : 'var(--error-text)'
                         }}>
                           {Number(topRecommendation.score) >= 0.7 ? 'High' : Number(topRecommendation.score) >= 0.4 ? 'Medium' : 'Low'}
                         </span>

@@ -1,6 +1,7 @@
+import { isRoleAdmin } from '../services/auth';
+
 export function isAdminRole(role) {
-  const normalized = String(role || '').toUpperCase();
-  return normalized === 'ADMIN' || normalized === 'ROLE_ADMIN';
+  return isRoleAdmin(role);
 }
 
 export function resolveNavigation(role, signedIn) {
@@ -29,6 +30,7 @@ export function resolveNavigation(role, signedIn) {
     { key: 'products', label: 'Products', to: '/products' },
     { key: 'cart', label: 'Cart', to: '/cart' },
     { key: 'orders', label: 'Orders', to: '/orders' },
+    { key: 'addresses', label: 'Addresses', to: '/addresses' },
     { key: 'logout', label: 'Logout', to: '/login', kind: 'button' }
   ];
 }

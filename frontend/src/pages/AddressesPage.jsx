@@ -89,8 +89,17 @@ function AddressesPage() {
   return (
     <div className="page-shell">
       <section className="panel panel-padding">
-        <h2 className="page-title">My Addresses</h2>
-        <p className="page-subtitle">Save a shipping address so checkout can be completed quickly.</p>
+        {loading ? (
+          <>
+            <div className="skeleton skeleton-title" style={{ width: '35%', marginBottom: '0.5rem' }} />
+            <div className="skeleton skeleton-text" style={{ width: '55%', marginBottom: '1rem' }} />
+          </>
+        ) : (
+          <>
+            <h2 className="page-title">My Addresses</h2>
+            <p className="page-subtitle">Save a shipping address so checkout can be completed quickly.</p>
+          </>
+        )}
 
         <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1rem 0' }} />
 

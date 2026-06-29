@@ -52,19 +52,19 @@ function HomePage() {
       <section className="grid-responsive">
         <article className="panel panel-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           <div style={{ fontSize: '1.5rem' }}>🚚</div>
-          <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700 }}>Fast Delivery</h3>
+          <h3 className="section-title" style={{ margin: 0, fontSize: '1rem' }}>Fast Delivery</h3>
           <p className="muted" style={{ margin: 0 }}>Orders processed and shipped quickly.</p>
         </article>
 
         <article className="panel panel-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           <div style={{ fontSize: '1.5rem' }}>🔒</div>
-          <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700 }}>Secure Checkout</h3>
+          <h3 className="section-title" style={{ margin: 0, fontSize: '1rem' }}>Secure Checkout</h3>
           <p className="muted" style={{ margin: 0 }}>Your payment info is always protected.</p>
         </article>
 
         <article className="panel panel-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           <div style={{ fontSize: '1.5rem' }}>📦</div>
-          <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700 }}>Easy Returns</h3>
+          <h3 className="section-title" style={{ margin: 0, fontSize: '1rem' }}>Easy Returns</h3>
           <p className="muted" style={{ margin: 0 }}>Hassle-free returns within 30 days.</p>
         </article>
       </section>

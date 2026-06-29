@@ -107,7 +107,7 @@ function CustomerLayout() {
         <Outlet />
       </main>
 
-      <footer style={{ padding: '1rem', borderTop: '1px solid #ddd', background: '#fff' }}>
+      <footer style={{ padding: '1rem', borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
         <p>Customer storefront experience.</p>
       </footer>
     </div>

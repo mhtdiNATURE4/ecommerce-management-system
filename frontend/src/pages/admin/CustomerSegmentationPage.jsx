@@ -246,18 +246,18 @@ function badgeStyle(segment) {
   const normalized = normalizeSegment(segment);
 
   if (normalized === 'VIP') {
-    return { background: '#fef3c7', color: '#92400e' };
+    return { background: 'var(--warning-bg)', color: 'var(--warning-text)' };
   }
 
   if (normalized === 'REGULAR') {
-    return { background: '#dbeafe', color: '#1d4ed8' };
+    return { background: 'var(--info-bg)', color: 'var(--info-text)' };
   }
 
   if (normalized === 'LOW_VALUE') {
-    return { background: '#dcfce7', color: '#166534' };
+    return { background: 'var(--success-bg)', color: 'var(--success-text)' };
   }
 
-  return { background: '#f3f4f6', color: '#374151' };
+  return { background: 'var(--neutral-bg)', color: 'var(--neutral-text)' };
 }
 
 export default CustomerSegmentationPage;

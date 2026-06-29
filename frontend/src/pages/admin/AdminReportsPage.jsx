@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
-import { isAdminAuthenticated } from '../../services/auth';
+import { isAdminAuthenticated, getToken } from '../../services/auth';
 
 const FILTER_OPTIONS = ['All Reports', 'Active Reports'];
 
@@ -102,9 +102,10 @@ function AdminReportsPage() {
 
   async function handleDownloadLatest(report) {
     try {
+      const token = getToken();
       const response = await fetch(`/api/admin/reports/${report.id}/download`, {
         headers: {
-          ...(localStorage.getItem('ecommerce_token') ? { Authorization: `Bearer ${localStorage.getItem('ecommerce_token')}` } : {})
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
         }
       });
 
@@ -197,7 +198,6 @@ function AdminReportsPage() {
               const isRunning = runningReportId === report.id;
               const isHistoryLoading = loadingHistoryId === report.id;
 
-              return (
                 <div key={report.id} className="panel-card" style={{ display: 'grid', gap: '0.8rem', padding: '1rem' }}>
                   <div>
                     <div style={{ fontWeight: 700 }}>{report.name}</div>
@@ -210,7 +210,7 @@ function AdminReportsPage() {
                         {report.reportType || 'N/A'}
                       </span>
                     </span>
-                    <span style={{ padding: '0.3rem 0.6rem', borderRadius: '999px', background: report.enabled ? '#dcfce7' : '#f3f4f6', color: report.enabled ? '#166534' : '#374151', fontSize: '0.85rem' }}>
+                    <span style={{ padding: '0.3rem 0.6rem', borderRadius: '999px', background: report.enabled ? 'var(--success-bg)' : 'var(--neutral-bg)', color: report.enabled ? 'var(--success-text)' : 'var(--neutral-text)', fontSize: '0.85rem' }}>
                       {report.enabled ? 'Active' : 'Inactive'}
                     </span>
                   </div>
@@ -246,7 +246,7 @@ function AdminReportsPage() {
       </section>
 
       <section className="panel panel-padding">
-        <h3 style={{ marginTop: 0 }}>Low Stock</h3>
+        <h3 className="section-title" style={{ marginTop: 0 }}>Low Stock</h3>
         {lowStockProducts.length === 0 ? (
           <p className="page-subtitle">No low-stock products were returned by the backend.</p>
         ) : (

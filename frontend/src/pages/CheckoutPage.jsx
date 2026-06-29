@@ -227,7 +227,7 @@ function CheckoutPage() {
             ) : null}
 
             <div>
-              <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>Shipping Address</h3>
+              <h3 className="section-title" style={{ marginTop: 0, marginBottom: '0.75rem' }}>Shipping Address</h3>
               {addresses.length === 0 ? null : (
                 <label className="form-field">
                   <span className="muted">Select delivery address</span>

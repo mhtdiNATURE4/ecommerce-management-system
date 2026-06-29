@@ -16,6 +16,12 @@
   --success-text: #166534;
   --error-bg: #fee2e2;
   --error-text: #b91c1c;
+  --info-bg: #dbeafe;
+  --info-text: #1e40af;
+  --warning-bg: #fef9c3;
+  --warning-text: #854d0e;
+  --neutral-bg: #f3f4f6;
+  --neutral-text: #374151;
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 

@@ -67,12 +67,12 @@ function OrdersPage() {
     switch (normalizedStatus) {
       case 'CREATED':
       case 'PENDING':
-        return { background: 'var(--secondary)', color: 'var(--text)' };
+        return { background: 'var(--neutral-bg)', color: 'var(--neutral-text)' };
       case 'PROCESSING':
       case 'CONFIRMED':
-        return { background: '#dbeafe', color: '#1e40af' };
+        return { background: 'var(--info-bg)', color: 'var(--info-text)' };
       case 'SHIPPED':
-        return { background: '#fef9c3', color: '#854d0e' };
+        return { background: 'var(--warning-bg)', color: 'var(--warning-text)' };
       case 'DELIVERED':
       case 'COMPLETED':
         return { background: 'var(--success-bg)', color: 'var(--success-text)' };
@@ -143,7 +143,7 @@ function OrdersPage() {
             <div key={order.id} className="panel-card" style={{ padding: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ display: 'grid', gap: '0.4rem' }}>
-                  <div style={{ fontWeight: 700 }}>Order #{index + 1}</div>
+                  <div style={{ fontWeight: 700 }}>Order #{order.id ?? order.orderNumber ?? (index + 1)}</div>
                   <div className="muted" style={{ fontSize: '0.95rem' }}>
                     Date: {formatDate(order.createdAt)}
                   </div>
