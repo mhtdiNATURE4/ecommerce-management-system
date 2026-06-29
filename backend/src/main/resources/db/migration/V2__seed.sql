@@ -13,7 +13,7 @@ VALUES
  'Apple smartphone with A17 Pro chip and 256GB storage',
  1199.99,
  25,
- '/images/products/iphone15pro.jpg',
+ '/images/products/iphone15pro.png',
  1,
  0),
 
@@ -21,7 +21,7 @@ VALUES
  'Samsung flagship smartphone with AMOLED display',
  999.99,
  30,
- '/images/products/galaxys24.jpg',
+ '/images/products/galaxys24.png',
  1,
  0),
 
@@ -29,7 +29,7 @@ VALUES
  'Noise cancelling wireless headphones',
  399.99,
  40,
- '/images/products/sonyxm5.jpg',
+ '/images/products/sonyxm5.png',
  1,
  0),
 
@@ -37,7 +37,7 @@ VALUES
  'High-performance laptop with Intel Core i7',
  1799.99,
  15,
- '/images/products/dellxps15.jpg',
+ '/images/products/dellxps15.png',
  1,
  0),
 
@@ -45,7 +45,7 @@ VALUES
  'Smartwatch with health and fitness tracking',
  499.99,
  20,
- '/images/products/applewatch9.jpg',
+ '/images/products/applewatch9.png',
  1,
  0);
 
@@ -59,7 +59,7 @@ VALUES
  'A handbook of agile software craftsmanship by Robert C. Martin',
  39.99,
  50,
- '/images/products/cleancode.jpg',
+ '/images/products/cleancode.png',
  2,
  0),
 
@@ -67,7 +67,7 @@ VALUES
  'Best practices for Java programming by Joshua Bloch',
  45.99,
  35,
- '/images/products/effectivejava.jpg',
+ '/images/products/effectivejava.png',
  2,
  0),
 
@@ -75,7 +75,7 @@ VALUES
  'Comprehensive guide to Spring Framework',
  49.99,
  28,
- '/images/products/springinaction.jpg',
+ '/images/products/springinaction.png',
  2,
  0),
 
@@ -83,7 +83,7 @@ VALUES
  'Elements of reusable object-oriented software',
  54.99,
  18,
- '/images/products/designpatterns.jpg',
+ '/images/products/designpatterns.png',
  2,
  0),
 
@@ -91,6 +91,6 @@ VALUES
  'Journey to mastery for modern software developers',
  42.99,
  40,
- '/images/products/pragmaticprogrammer.jpg',
+ '/images/products/pragmaticprogrammer.png',
  2,
  0);
