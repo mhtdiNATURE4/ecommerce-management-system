@@ -42,12 +42,13 @@ public class CustomerSegmentationService {
                     double totalSpent = entry.getValue();
                     String segment = totalSpent >= 3000 ? "VIP" : totalSpent >= 1000 ? "REGULAR" : "LOW_VALUE";
 
-                    return new CustomerSegmentResponse(
+                        return new CustomerSegmentResponse(
                             user.getId(),
                             user.getName(),
+                            user.getEmail(),
                             BigDecimal.valueOf(totalSpent),
                             segment
-                    );
+                        );
                 })
                 .sorted((a, b) -> b.totalSpent().compareTo(a.totalSpent()))
                 .toList();
