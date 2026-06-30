@@ -107,9 +107,6 @@ function RegisterPage() {
           <img src="/favicon.svg" alt="iStore logo" style={{ width: '36px', height: '36px', borderRadius: '10px' }} />
           <h2 className="page-title" style={{ margin: 0 }}>iStore Register</h2>
         </div>
-        <Link to="/" className="btn btn-secondary" style={{ marginBottom: '1rem', width: 'fit-content' }}>
-          ← Back to Home
-        </Link>
         <p className="page-subtitle" style={{ marginBottom: '1.25rem' }}>Create a new account to get started.</p>
 
         {error ? <div className="status-message status-error" style={{ marginBottom: '1rem' }}>{error}</div> : null}
