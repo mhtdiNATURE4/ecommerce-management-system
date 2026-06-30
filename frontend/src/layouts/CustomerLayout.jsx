@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { clearToken, getToken, getUserName, getUserRole } from '../services/auth';
 import { isAdminRole, resolveNavigation } from '../navigation/navigation';
-import { Home, ShoppingBag, ShoppingCart, Package, MapPin, LogOut } from 'lucide-react';
+import { Home, ShoppingBag, ShoppingCart, Package, MapPin, LogOut, LogIn, UserPlus } from 'lucide-react';
 
 function CustomerLayout() {
   const navigate = useNavigate();
@@ -19,7 +19,9 @@ function CustomerLayout() {
     cart: <ShoppingCart size={15} />,
     orders: <Package size={15} />,
     addresses: <MapPin size={15} />,
-    logout: <LogOut size={15} />
+    logout: <LogOut size={15} />,
+    login: <LogIn size={15} />,
+    register: <UserPlus size={15} />
   };
 
   useEffect(() => {

@@ -1,10 +1,18 @@
 import { Navigate, NavLink, Outlet } from 'react-router-dom';
 import { getToken, getUserRole } from '../services/auth';
 import { isAdminRole, resolveNavigation } from '../navigation/navigation';
+import { Home, ShoppingBag, LogIn, UserPlus } from 'lucide-react';
 
 function AuthLayout() {
   const token = getToken();
   const role = getUserRole();
+
+  const navIcons = {
+    home: <Home size={15} />,
+    products: <ShoppingBag size={15} />,
+    login: <LogIn size={15} />,
+    register: <UserPlus size={15} />
+  };
 
   if (!token) {
     const navigation = resolveNavigation(role, false);
@@ -25,7 +33,10 @@ function AuthLayout() {
                   to={item.to}
                   className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                 >
-                  {item.label}
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    {navIcons[item.key]}
+                    {item.label}
+                  </span>
                 </NavLink>
               ))}
             </nav>

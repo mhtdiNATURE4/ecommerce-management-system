@@ -10,7 +10,7 @@ function AdminLayout() {
 
   const navIcons = {
     dashboard: <LayoutDashboard size={15} />,
-    orders: <ClipboardList size={15} />,
+    'orders-management': <ClipboardList size={15} />,
     analytics: <BarChart2 size={15} />,
     reports: <FileText size={15} />,
     logout: <LogOut size={15} />
