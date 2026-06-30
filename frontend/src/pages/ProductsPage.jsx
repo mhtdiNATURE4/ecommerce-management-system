@@ -144,9 +144,9 @@ function ProductsPage() {
       <section className="panel panel-padding">
         <h2 className="page-title">Products</h2>
         <p className="page-subtitle">Browse the available electronics from the store catalog.</p>
+        {message ? <div className="status-message status-success" style={{ marginTop: '1rem' }}>{message}</div> : null}
+        {cartError ? <div className="status-message status-error" style={{ marginTop: '1rem' }}>{cartError}</div> : null}
       </section>
-      {message ? <div className="status-message status-success">{message}</div> : null}
-      {cartError ? <div className="status-message status-error">{cartError}</div> : null}
 
       <section className="panel panel-padding">
         <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>

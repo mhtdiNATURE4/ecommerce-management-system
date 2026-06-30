@@ -2,6 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { getToken } from '../services/auth';
+import { Clock, Loader, CheckCircle, XCircle } from 'lucide-react';
+
+const statusIcon = {
+  CREATED:    <Clock size={13} />,
+  PROCESSING: <Loader size={13} />,
+  COMPLETED:  <CheckCircle size={13} />,
+  CANCELLED:  <XCircle size={13} />
+};
 
 function OrdersPage() {
   const navigate = useNavigate();
@@ -142,7 +150,8 @@ function OrdersPage() {
                   <div className="muted" style={{ fontSize: '0.95rem' }}>
                     Date: {formatDate(order.createdAt)}
                   </div>
-                  <span style={{ ...getStatusStyle(order.status), borderRadius: '999px', padding: '0.2rem 0.65rem', fontSize: '0.8rem', fontWeight: 700, display: 'inline-block', width: 'fit-content' }}>
+                  <span style={{ ...getStatusStyle(order.status), display: 'inline-flex', alignItems: 'center', gap: '0.3rem', borderRadius: '999px', padding: '0.2rem 0.65rem', fontSize: '0.8rem', fontWeight: 700 }}>
+                    {statusIcon[String(order.status).toUpperCase()]}
                     {order.status}
                   </span>
                   <button type="button" onClick={() => toggleExpand(order.id)} className="btn btn-secondary" style={{ marginTop: '0.25rem', width: 'fit-content' }}>

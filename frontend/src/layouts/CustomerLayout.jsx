@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { clearToken, getToken, getUserName, getUserRole } from '../services/auth';
 import { isAdminRole, resolveNavigation } from '../navigation/navigation';
+import { Home, ShoppingBag, ShoppingCart, Package, MapPin, LogOut } from 'lucide-react';
 
 function CustomerLayout() {
   const navigate = useNavigate();
@@ -11,6 +12,15 @@ function CustomerLayout() {
   const isSignedIn = Boolean(getToken());
   const userName = getUserName();
   const navigation = resolveNavigation(role, isSignedIn);
+
+  const navIcons = {
+    home: <Home size={15} />,
+    products: <ShoppingBag size={15} />,
+    cart: <ShoppingCart size={15} />,
+    orders: <Package size={15} />,
+    addresses: <MapPin size={15} />,
+    logout: <LogOut size={15} />
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -75,7 +85,10 @@ function CustomerLayout() {
                 if (item.kind === 'button') {
                   return (
                     <button key={item.key} type="button" onClick={handleLogout} className="nav-link nav-link-button">
-                      {item.label}
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        {navIcons[item.key]}
+                        {item.label}
+                      </span>
                     </button>
                   );
                 }
@@ -87,14 +100,17 @@ function CustomerLayout() {
                     to={item.to}
                     className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                   >
-                    {isCartLink ? (
-                      <>
-                        {item.label}
-                        {cartCount ? <span className="nav-badge">{cartCount}</span> : null}
-                      </>
-                    ) : (
-                      item.label
-                    )}
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      {navIcons[item.key]}
+                      {isCartLink ? (
+                        <>
+                          {item.label}
+                          {cartCount ? <span className="nav-badge">{cartCount}</span> : null}
+                        </>
+                      ) : (
+                        item.label
+                      )}
+                    </span>
                   </NavLink>
                 );
               })}
@@ -108,7 +124,7 @@ function CustomerLayout() {
       </main>
 
       <footer style={{ padding: '1rem', borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
-        <p>Customer storefront experience.</p>
+        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--muted)' }}>iStore © 2025</p>
       </footer>
     </div>
   );

@@ -148,7 +148,6 @@ function CheckoutPage() {
         {error ? <div className="status-message status-error" style={{ marginBottom: '1rem' }}>{error}</div> : null}
 
         <div style={{ marginBottom: '1.5rem' }}>
-          <h3 className="section-title" style={{ marginTop: 0, marginBottom: '0.75rem' }}>Delivery Details</h3>
           <div className="panel-card" style={{ padding: '1rem', display: 'grid', gap: '1rem' }}>
             <div>
               <h3 className="section-title" style={{ marginTop: 0, marginBottom: '0.75rem' }}>Shipping Address</h3>

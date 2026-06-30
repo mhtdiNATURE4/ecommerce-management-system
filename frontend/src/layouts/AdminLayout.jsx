@@ -1,11 +1,20 @@
 import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { clearToken, getToken, getUserRole } from '../services/auth';
 import { isAdminRole, resolveNavigation } from '../navigation/navigation';
+import { LayoutDashboard, ClipboardList, BarChart2, FileText, LogOut } from 'lucide-react';
 
 function AdminLayout() {
   const navigate = useNavigate();
   const role = getUserRole();
   const navigation = resolveNavigation(role, Boolean(getToken()));
+
+  const navIcons = {
+    dashboard: <LayoutDashboard size={15} />,
+    orders: <ClipboardList size={15} />,
+    analytics: <BarChart2 size={15} />,
+    reports: <FileText size={15} />,
+    logout: <LogOut size={15} />
+  };
 
   if (!isAdminRole(role)) {
     return <Navigate to="/" replace />;
@@ -33,7 +42,10 @@ function AdminLayout() {
                 if (item.kind === 'button') {
                   return (
                     <button key={item.key} type="button" onClick={handleLogout} className="nav-link nav-link-button admin-logout-button">
-                      {item.label}
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        {navIcons[item.key]}
+                        {item.label}
+                      </span>
                     </button>
                   );
                 }
@@ -44,7 +56,10 @@ function AdminLayout() {
                     to={item.to}
                     className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                   >
-                    {item.label}
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      {navIcons[item.key]}
+                      {item.label}
+                    </span>
                   </NavLink>
                 );
               })}
@@ -58,7 +73,7 @@ function AdminLayout() {
       </main>
 
       <footer style={{ padding: '1rem', borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
-        <p>Administrative tools.</p>
+        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--muted)' }}>iStore © 2025</p>
       </footer>
     </div>
   );

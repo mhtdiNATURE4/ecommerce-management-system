@@ -35,6 +35,10 @@ function AuthLayout() {
         <main>
           <Outlet />
         </main>
+
+        <footer style={{ padding: '1rem', borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
+          <p>iStore © 2025</p>
+        </footer>
       </div>
     );
   }

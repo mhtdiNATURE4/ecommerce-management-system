@@ -2,8 +2,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { isAdminAuthenticated } from '../../services/auth';
+import { Clock, Loader, CheckCircle, XCircle } from 'lucide-react';
 
 const STATUS_FILTERS = ['All', 'CREATED', 'PROCESSING', 'COMPLETED', 'CANCELLED'];
+
+const statusIcon = {
+  CREATED:    <Clock size={13} />,
+  PROCESSING: <Loader size={13} />,
+  COMPLETED:  <CheckCircle size={13} />,
+  CANCELLED:  <XCircle size={13} />
+};
 
 function getStatusBadgeStyle(status) {
   const normalized = String(status || '').toUpperCase();
@@ -235,7 +243,10 @@ function AdminOrdersPage() {
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                      <span style={{ padding: '0.35rem 0.7rem', borderRadius: '999px', fontWeight: 600, ...getStatusBadgeStyle(status) }}>{status}</span>
+                      <span style={{ ...getStatusBadgeStyle(status), display: 'inline-flex', alignItems: 'center', gap: '0.3rem', borderRadius: '999px', padding: '0.35rem 0.7rem', fontWeight: 600 }}>
+                        {statusIcon[status]}
+                        {status}
+                      </span>
                       <strong>${subtotal.toFixed(2)}</strong>
                     </div>
                   </div>
@@ -247,8 +258,16 @@ function AdminOrdersPage() {
                       <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', borderTop: '1px solid var(--border)', paddingTop: '0.75rem' }}>
                         <span style={{ fontWeight: 700 }}>Order Total</span>
                         <strong>${subtotal.toFixed(2)}</strong>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          style={{ width: 'fit-content' }}
+                          onClick={() => setExpandedOrderId((prev) => (prev === order.id ? null : order.id))}
+                        >
+                          {expandedOrderId === order.id ? 'Hide items' : 'View items'}
+                        </button>
+                        {renderActions(order)}
                       </div>
-                    {renderActions(order)}
 
                   {expandedOrderId === order.id ? (
                     <div className="panel panel-padding" style={{ marginTop: '1rem' }}>

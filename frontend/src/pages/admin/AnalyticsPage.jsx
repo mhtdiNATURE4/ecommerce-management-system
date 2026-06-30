@@ -237,7 +237,7 @@ function AnalyticsPage() {
         <h3 className="section-title" style={{ marginTop: 0 }}>Customer Segmentation</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
           {customerSummary.map((item) => (
-            <div key={item.label} className="panel-card" style={{ padding: '1rem', borderLeft: '4px solid var(--success)', borderRadius: '0 12px 12px 0' }}>
+            <div key={item.label} className="panel-card" style={{ padding: '1rem', borderLeft: '4px solid var(--success-text)', borderRadius: '0 12px 12px 0' }}>
               <div className="muted" style={{ fontSize: '0.9rem' }}>{item.label}</div>
               <div style={{ fontSize: '1.5rem', fontWeight: 700, marginTop: '0.35rem' }}>{item.value}</div>
             </div>

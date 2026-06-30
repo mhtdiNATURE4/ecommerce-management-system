@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { isAdminAuthenticated } from '../../services/auth';
+import { Package, Users, ShoppingCart, DollarSign, FileText, Settings, AlertTriangle } from 'lucide-react';
 
 function AdminDashboardPage() {
   const navigate = useNavigate();
@@ -60,13 +61,13 @@ function AdminDashboardPage() {
     const processingCount = orders.filter((order) => String(order.status || '').toUpperCase() === 'PROCESSING').length;
 
     return [
-      { label: 'Total Products', value: dashboard.totalProducts ?? 'N/A', icon: '📦' },
-      { label: 'Total Customers', value: dashboard.totalUsers ?? 'N/A', icon: '👥' },
-      { label: 'Total Orders', value: dashboard.totalOrders ?? 'N/A', icon: '🛒' },
-      { label: 'Total Revenue', value: dashboard.totalRevenue != null ? `$${Number(dashboard.totalRevenue).toFixed(2)}` : 'N/A', icon: '💰' },
-      { label: 'Orders in CREATED', value: createdCount, icon: '📝' },
-      { label: 'Orders in PROCESSING', value: processingCount, icon: '⚙️' },
-      { label: 'Low-stock products', value: lowStockProducts.length, icon: '⚠️' }
+      { label: 'Total Products', value: dashboard.totalProducts ?? 'N/A', icon: <Package size={18} /> },
+      { label: 'Total Customers', value: dashboard.totalUsers ?? 'N/A', icon: <Users size={18} /> },
+      { label: 'Total Orders', value: dashboard.totalOrders ?? 'N/A', icon: <ShoppingCart size={18} /> },
+      { label: 'Total Revenue', value: dashboard.totalRevenue != null ? `$${Number(dashboard.totalRevenue).toFixed(2)}` : 'N/A', icon: <DollarSign size={18} /> },
+      { label: 'Orders in CREATED', value: createdCount, icon: <FileText size={18} /> },
+      { label: 'Orders in PROCESSING', value: processingCount, icon: <Settings size={18} /> },
+      { label: 'Low-stock products', value: lowStockProducts.length, icon: <AlertTriangle size={18} /> }
     ];
   }, [dashboard, orders, lowStockProducts]);
 
@@ -131,7 +132,7 @@ function AdminDashboardPage() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', marginBottom: '0.35rem' }}>
-                <span style={{ fontSize: '1.1rem' }}>{metric.icon}</span>
+                <span>{metric.icon}</span>
                 <div className="muted" style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   {metric.label}
                 </div>
