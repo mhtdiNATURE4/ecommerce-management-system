@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { isAdminAuthenticated } from '../../services/auth';
@@ -108,7 +109,17 @@ function AnalyticsPage() {
   }, [products]);
 
   const topRecommendations = useMemo(() => {
-    return [...recommendations]
+    const seen = new Set();
+    const deduplicated = recommendations.filter((rule) => {
+      const recommended = rule?.recommendations?.[0]?.productName;
+      if (!recommended || !rule?.productName) return true;
+      const key = [normalizeProductName(rule.productName), normalizeProductName(recommended)].sort().join('||');
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    return [...deduplicated]
       .map((rule) => ({
         productName: rule?.productName || 'Unknown product',
         productImage: getProductImage(rule?.productName, productLookup),
@@ -265,9 +276,7 @@ function AnalyticsPage() {
                       <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                           <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700, fontSize: '1.1rem' }}>
-                            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
-                              <path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.2c-3.3 0-9.9 1.7-9.9 5v1.1c0 .6.5 1.1 1.1 1.1h17.6c.6 0 1.1-.5 1.1-1.1v-1.1c0-3.3-6.6-5-9.9-5z" />
-                            </svg>
+                            <User size={28} color="white" />
                           </div>
                           <span>{customer.name || 'Unknown customer'}</span>
                         </div>
