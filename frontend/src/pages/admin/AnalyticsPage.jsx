@@ -192,54 +192,57 @@ function AnalyticsPage() {
         {topRecommendations.length === 0 ? (
           <div className="empty-state">No recommendation data is available yet.</div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: 'var(--surface-muted)', textAlign: 'left' }}>
-                  <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)' }}>Product A</th>
-                  <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)' }}>Recommended With</th>
-                  <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)' }}>Confidence</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topRecommendations.map((rule, index) => {
-                  const topItem = rule.recommendations[0];
-                  return (
-                    <tr key={`${rule.productName}-${index}`}>
-                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                          <img
-                            src={rule.productImage || 'https://picsum.photos/seed/default/600/400'}
-                            alt={rule.productName}
-                            style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px' }}
-                          />
-                          <span>{rule.productName}</span>
+          <div style={{ display: 'grid', gap: '0.9rem' }}>
+            {topRecommendations.map((rule, index) => {
+              const topItem = rule.recommendations[0];
+              return (
+                <div key={`${rule.productName}-${index}`} className="panel-card" style={{ padding: '1rem', display: 'grid', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
+                      <img
+                        src={rule.productImage || 'https://picsum.photos/seed/default/600/400'}
+                        alt={rule.productName}
+                        style={{ width: '72px', height: '72px', objectFit: 'cover', borderRadius: '10px' }}
+                      />
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '1rem' }}>{rule.productName}</div>
+                        <div className="muted" style={{ fontSize: '0.95rem' }}>
+                          Best confidence: {topItem?.score != null ? Number(topItem.score).toFixed(2) : '—'}
                         </div>
-                      </td>
-                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)', verticalAlign: 'top' }}>
-                        {rule.recommendations.length === 0 ? '—' : (
-                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.45rem', minWidth: '220px' }}>
-                            {rule.recommendations.map((item, itemIndex) => (
-                              <div key={`${item?.productName || 'recommendation'}-${itemIndex}`} style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', padding: '0.4rem 0.6rem', background: 'var(--surface-muted)', borderRadius: '10px', minWidth: 0 }}>
-                                <img
-                                  src={item.productImage || 'https://picsum.photos/seed/default/600/400'}
-                                  alt={item?.productName || 'Recommended product'}
-                                  style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
-                                />
-                                <span style={{ fontSize: '0.92rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item?.productName || 'Unknown'}</span>
-                              </div>
-                            ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="muted" style={{ fontSize: '0.85rem', marginBottom: '0.45rem' }}>Recommended with</div>
+                    <div style={{ display: 'grid', gap: '0.45rem' }}>
+                      {rule.recommendations.length === 0 ? (
+                        <div className="muted">No recommendations available.</div>
+                      ) : (
+                        rule.recommendations.slice(0, 4).map((item, itemIndex) => (
+                          <div key={`${item?.productName || 'recommendation'}-${itemIndex}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.45rem', padding: '0.45rem 0.6rem', background: 'var(--surface-muted)', borderRadius: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', minWidth: 0 }}>
+                              <img
+                                src={item.productImage || 'https://picsum.photos/seed/default/600/400'}
+                                alt={item?.productName || 'Recommended product'}
+                                style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
+                              />
+                              <span style={{ fontSize: '0.95rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item?.productName || 'Unknown'}</span>
+                            </div>
+                            <span className="muted" style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                              {item?.score != null ? Number(item.score).toFixed(2) : '—'}
+                            </span>
                           </div>
-                        )}
-                      </td>
-                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
-                        {topItem?.score != null ? Number(topItem.score).toFixed(2) : '—'}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        ))
+                      )}
+                      {rule.recommendations.length > 4 ? (
+                        <div style={{ fontSize: '0.8rem', color: 'var(--muted)', paddingLeft: '0.1rem' }}>+{rule.recommendations.length - 4} more</div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </section>
@@ -275,8 +278,8 @@ function AnalyticsPage() {
                     <tr key={customer.userId ?? `${customer.name}-${customer.totalSpent}`}>
                       <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                          <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700, fontSize: '1.1rem' }}>
-                            <User size={28} color="white" />
+                          <div style={{ width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', fontWeight: 700, fontSize: '1.1rem' }}>
+                            <User size={24} color="currentColor" />
                           </div>
                           <span>{customer.name || 'Unknown customer'}</span>
                         </div>
