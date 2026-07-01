@@ -189,12 +189,12 @@ function ProductsPage() {
           <p className="empty-state" style={{ margin: 0 }}>No products match your current filters.</p>
         </div>
       ) : (
-        <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+        <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 360px))', justifyContent: 'start' }}>
           {filteredProducts.map((product) => {
             const isOutOfStock = Number(product.stock) <= 0;
 
             return (
-              <div key={product.id} className="panel panel-padding" style={{ display: 'grid', gap: '0.8rem' }}>
+              <div key={product.id} className="panel panel-padding" style={{ display: 'grid', gap: '0.8rem', maxWidth: '360px', width: '100%' }}>
                 <img
                   src={product.imageUrl || 'https://picsum.photos/seed/default/600/400'}
                   alt={product.name}

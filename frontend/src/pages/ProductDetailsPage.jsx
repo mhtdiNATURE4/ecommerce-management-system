@@ -238,20 +238,20 @@ function ProductDetailsPage() {
         {!isAuthenticated ? (
           <p className="muted">Log in to receive personalized recommendations.</p>
         ) : recommendationsLoading ? (
-          <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+          <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 360px))', justifyContent: 'start' }}>
             {[0, 1, 2].map((i) => (
-              <div key={i} className="panel-card" style={{ display: 'grid', gap: '0.6rem', padding: '0.9rem' }}>
-                <div className="skeleton" style={{ height: '140px', borderRadius: '8px' }} />
+              <div key={i} className="panel-card" style={{ display: 'grid', gap: '0.6rem', padding: '0.9rem', width: '100%', maxWidth: '360px' }}>
+                <div className="skeleton" style={{ height: '180px', borderRadius: '8px' }} />
                 <div className="skeleton skeleton-title" style={{ width: '60%' }} />
                 <div className="skeleton skeleton-text" style={{ width: '40%' }} />
               </div>
             ))}
           </div>
         ) : recommendations.length > 0 ? (
-          <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+          <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 360px))', justifyContent: 'start' }}>
             {recommendations.map((item) => (
-              <Link key={item.id} to={`/products/${item.id}`} className="panel-card" style={{ display: 'grid', gap: '0.6rem', padding: '0.9rem', color: 'inherit', textDecoration: 'none' }}>
-                <img src={item.imageUrl || 'https://picsum.photos/seed/default/600/400'} alt={item.name} style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px' }} />
+              <Link key={item.id} to={`/products/${item.id}`} className="panel-card" style={{ display: 'grid', gap: '0.6rem', padding: '0.9rem', color: 'inherit', textDecoration: 'none', width: '100%', maxWidth: '360px' }}>
+                <img src={item.imageUrl || 'https://picsum.photos/seed/default/600/400'} alt={item.name} style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px' }} />
                 <div>
                   <h4 style={{ margin: '0 0 0.25rem' }}>{item.name}</h4>
                   <p style={{ margin: 0, fontWeight: 600 }}>${item.price ?? 'N/A'}</p>
