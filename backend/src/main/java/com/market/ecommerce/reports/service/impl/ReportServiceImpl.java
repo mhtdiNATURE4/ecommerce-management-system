@@ -3,10 +3,8 @@ package com.market.ecommerce.reports.service.impl;
 import com.market.ecommerce.reports.dto.*;
 import com.market.ecommerce.reports.entity.ReportDefinition;
 import com.market.ecommerce.reports.entity.ReportExecution;
-import com.market.ecommerce.reports.entity.ReportSchedule;
 import com.market.ecommerce.reports.repository.ReportDefinitionRepository;
 import com.market.ecommerce.reports.repository.ReportExecutionRepository;
-import com.market.ecommerce.reports.repository.ReportScheduleRepository;
 import com.market.ecommerce.reports.service.ReportService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +39,6 @@ import com.market.ecommerce.dto.ProductResponse;
 public class ReportServiceImpl implements ReportService {
 
     private final ReportDefinitionRepository definitionRepository;
-    private final ReportScheduleRepository scheduleRepository;
     private final ReportExecutionRepository executionRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
@@ -50,7 +47,6 @@ public class ReportServiceImpl implements ReportService {
     private final ProductService productService;
 
     public ReportServiceImpl(ReportDefinitionRepository definitionRepository,
-                             ReportScheduleRepository scheduleRepository,
                              ReportExecutionRepository executionRepository,
                              OrderRepository orderRepository,
                              OrderItemRepository orderItemRepository,
@@ -58,7 +54,6 @@ public class ReportServiceImpl implements ReportService {
                              CustomerSegmentationService segmentationService,
                              ProductService productService) {
         this.definitionRepository = definitionRepository;
-        this.scheduleRepository = scheduleRepository;
         this.executionRepository = executionRepository;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
@@ -242,82 +237,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ReportScheduleResponse> listSchedules() {
-        return scheduleRepository.findAll().stream()
-            .map(s -> new ReportScheduleResponse(
-                s.getId(),
-                s.getReport().getId(),
-                s.getCronExpression(),
-                s.getEmail(),
-                s.isActive(),
-                s.getNextRun(),
-                s.getLastRun(),
-                s.getLastStatus(),
-                s.getExecutionCount(),
-                s.getLastError()
-            ))
-            .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional
-    public ReportScheduleResponse createSchedule(Long reportId, String cron, String email) {
-        ReportDefinition def = definitionRepository.findById(reportId).orElseThrow();
-        // validate cron
-        try {
-            org.springframework.scheduling.support.CronExpression.parse(cron);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("Invalid cron expression: " + ex.getMessage());
-        }
-
-        ReportSchedule s = new ReportSchedule();
-        s.setReport(def);
-        s.setCronExpression(cron);
-        s.setEmail(email);
-        s.setActive(true);
-        // compute nextRun
-        try {
-            java.time.ZonedDateTime now = java.time.ZonedDateTime.now(java.time.ZoneId.systemDefault());
-            java.time.ZonedDateTime next = org.springframework.scheduling.support.CronExpression.parse(cron).next(now.plusSeconds(1));
-            if (next != null) s.setNextRun(next.toLocalDateTime());
-        } catch (Exception ex) {
-            // ignore, nextRun will be null
-        }
-
-        scheduleRepository.save(s);
-        return new ReportScheduleResponse(s.getId(), def.getId(), s.getCronExpression(), s.getEmail(), s.isActive(), s.getNextRun(), s.getLastRun(), s.getLastStatus(), s.getExecutionCount(), s.getLastError());
-    }
-
-    @Override
-    @Transactional
-    public void pauseSchedule(Long id) {
-        ReportSchedule s = scheduleRepository.findById(id).orElseThrow();
-        s.setActive(false);
-        scheduleRepository.save(s);
-    }
-
-    @Override
-    @Transactional
-    public void resumeSchedule(Long id) {
-        ReportSchedule s = scheduleRepository.findById(id).orElseThrow();
-        s.setActive(true);
-        scheduleRepository.save(s);
-    }
-
-    @Override
-    @Transactional
-    public void deleteSchedule(Long id) {
-        scheduleRepository.deleteById(id);
-    }
-
-    @Override
     public ReportSummaryResponse summary() {
-        long totalScheduled = scheduleRepository.count();
         long successful = executionRepository.findAll().stream().filter(e -> "SUCCESS".equals(e.getStatus())).count();
         long failed = executionRepository.findAll().stream().filter(e -> "FAILED".equals(e.getStatus())).count();
         LocalDateTime last = executionRepository.findAll().stream().map(ReportExecution::getCompletedAt).filter(x -> x != null).max(LocalDateTime::compareTo).orElse(null);
-        LocalDateTime next = scheduleRepository.findByActiveTrue().stream().map(ReportSchedule::getNextRun).filter(x -> x != null).min(LocalDateTime::compareTo).orElse(null);
         double successRate = (successful + failed) == 0 ? 0.0 : (double) successful / (successful + failed);
-        return new ReportSummaryResponse(totalScheduled, successful, failed, last, next, successRate);
+        return new ReportSummaryResponse(null, successful, failed, last, null, successRate);
     }
 }

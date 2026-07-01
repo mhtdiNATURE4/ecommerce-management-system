@@ -57,35 +57,6 @@ public class ReportsController {
         return new ResponseEntity<>(data, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/schedules")
-    public List<ReportScheduleResponse> listSchedules() {
-        return reportService.listSchedules();
-    }
-
-    @PostMapping("/schedules")
-    public ResponseEntity<ReportScheduleResponse> createSchedule(@Valid @RequestBody CreateScheduleRequest request) {
-        var schedule = reportService.createSchedule(request.reportId(), request.cron(), request.email());
-        return ResponseEntity.ok(schedule);
-    }
-
-    @PostMapping("/schedules/{id}/pause")
-    public ResponseEntity<Void> pause(@PathVariable Long id) {
-        reportService.pauseSchedule(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/schedules/{id}/resume")
-    public ResponseEntity<Void> resume(@PathVariable Long id) {
-        reportService.resumeSchedule(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/schedules/{id}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
-        reportService.deleteSchedule(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/summary")
     public ReportSummaryResponse summary() {
         return reportService.summary();

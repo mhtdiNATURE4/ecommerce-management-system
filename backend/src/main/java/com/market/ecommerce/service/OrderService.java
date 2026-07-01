@@ -29,27 +29,21 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
-    private final NotificationService notificationService;
     private final com.market.ecommerce.service.inventory.InventoryService inventoryService;
-    private final com.market.ecommerce.event.OrderCreatedPublisher orderCreatedPublisher;
 
     public OrderService(OrderRepository orderRepository,
                         CartItemRepository cartRepository,
                         ProductRepository productRepository,
                         UserRepository userRepository,
                         AddressRepository addressRepository,
-                        NotificationService notificationService,
-                        com.market.ecommerce.service.inventory.InventoryService inventoryService,
-                        com.market.ecommerce.event.OrderCreatedPublisher orderCreatedPublisher) {
+                        com.market.ecommerce.service.inventory.InventoryService inventoryService) {
 
         this.orderRepository = orderRepository;
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
-        this.notificationService = notificationService;
         this.inventoryService = inventoryService;
-        this.orderCreatedPublisher = orderCreatedPublisher;
     }
 
     @Transactional
@@ -148,9 +142,6 @@ public class OrderService {
             throw ex;
         }
         cartRepository.deleteByUserId(user.getId());
-
-        // publish event to send notifications after commit
-        orderCreatedPublisher.publish(savedOrder.getId());
 
         return savedOrder;
     }
