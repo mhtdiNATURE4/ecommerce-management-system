@@ -26,3 +26,6 @@ pnpm-debug.log*
 coverage/
 *.lcov
 *.localstorage
+
+# Product images
+public/images/products/
