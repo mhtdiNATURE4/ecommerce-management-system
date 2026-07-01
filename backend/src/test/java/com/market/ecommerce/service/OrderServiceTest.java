@@ -4,7 +4,6 @@ import com.market.ecommerce.dto.OrderResponse;
 import com.market.ecommerce.entity.Order;
 import com.market.ecommerce.entity.OrderStatus;
 import com.market.ecommerce.entity.User;
-import com.market.ecommerce.event.OrderCreatedPublisher;
 import com.market.ecommerce.repository.AddressRepository;
 import com.market.ecommerce.repository.CartItemRepository;
 import com.market.ecommerce.repository.OrderRepository;
@@ -27,9 +26,7 @@ class OrderServiceTest {
         ProductRepository productRepository = Mockito.mock(ProductRepository.class);
         UserRepository userRepository = Mockito.mock(UserRepository.class);
         AddressRepository addressRepository = Mockito.mock(AddressRepository.class);
-        NotificationService notificationService = Mockito.mock(NotificationService.class);
         InventoryService inventoryService = Mockito.mock(InventoryService.class);
-        OrderCreatedPublisher orderCreatedPublisher = Mockito.mock(OrderCreatedPublisher.class);
 
         OrderService orderService = new OrderService(
                 orderRepository,
@@ -37,9 +34,7 @@ class OrderServiceTest {
                 productRepository,
                 userRepository,
                 addressRepository,
-                notificationService,
-                inventoryService,
-                orderCreatedPublisher
+                inventoryService
         );
 
         User user = User.builder()

@@ -8,9 +8,7 @@ import com.market.ecommerce.entity.User;
 import com.market.ecommerce.exception.BadRequestException;
 import com.market.ecommerce.repository.*;
 import com.market.ecommerce.service.OrderService;
-import com.market.ecommerce.service.NotificationService;
 import com.market.ecommerce.service.inventory.InventoryService;
-import com.market.ecommerce.event.OrderCreatedPublisher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,9 +29,7 @@ class OrderLifecycleServiceTest {
     private final ProductRepository productRepository = mock(ProductRepository.class);
     private final UserRepository userRepository = mock(UserRepository.class);
     private final AddressRepository addressRepository = mock(AddressRepository.class);
-    private final NotificationService notificationService = mock(NotificationService.class);
     private final InventoryService inventoryService = mock(InventoryService.class);
-    private final OrderCreatedPublisher orderCreatedPublisher = mock(OrderCreatedPublisher.class);
 
     private final OrderService orderService = new OrderService(
             orderRepository,
@@ -41,9 +37,7 @@ class OrderLifecycleServiceTest {
             productRepository,
             userRepository,
             addressRepository,
-            notificationService,
-            inventoryService,
-            orderCreatedPublisher
+            inventoryService
     );
 
     @AfterEach

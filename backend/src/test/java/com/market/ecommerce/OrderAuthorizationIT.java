@@ -3,7 +3,6 @@ package com.market.ecommerce;
 import com.market.ecommerce.dto.AuthResponse;
 import com.market.ecommerce.dto.CheckoutRequest;
 import com.market.ecommerce.dto.LoginRequest;
-import com.market.ecommerce.dto.PaymentRequest;
 import com.market.ecommerce.entity.Address;
 import com.market.ecommerce.entity.Category;
 import com.market.ecommerce.entity.CartItem;
@@ -14,7 +13,6 @@ import com.market.ecommerce.repository.AddressRepository;
 import com.market.ecommerce.repository.CartItemRepository;
 import com.market.ecommerce.repository.CategoryRepository;
 import com.market.ecommerce.repository.OrderRepository;
-import com.market.ecommerce.repository.PaymentRepository;
 import com.market.ecommerce.repository.ProductRepository;
 import com.market.ecommerce.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,9 +63,6 @@ public class OrderAuthorizationIT {
     private OrderRepository orderRepository;
 
     @Autowired
-    private PaymentRepository paymentRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     private Long addrAId;
@@ -78,7 +73,6 @@ public class OrderAuthorizationIT {
 
     @BeforeEach
     void setup() {
-        paymentRepository.deleteAll();
         orderRepository.deleteAll();
         cartItemRepository.deleteAll();
         addressRepository.deleteAll();
@@ -169,25 +163,6 @@ public class OrderAuthorizationIT {
         assertThat(cancelResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
-    @Test
-    void ownerCanPayOrderAndDuplicatePaymentIsRejected() {
-        Long orderId = checkoutAs(tokenA, addrAId);
-
-        ResponseEntity<String> paymentResponse = requestPayment(orderId, "10.00", "CREDIT_CARD", tokenA);
-        assertThat(paymentResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
-        ResponseEntity<String> secondPaymentResponse = requestPayment(orderId, "10.00", "CREDIT_CARD", tokenA);
-        assertThat(secondPaymentResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
-    void anotherCustomerCannotPaySomeoneElsesOrder() {
-        Long orderId = checkoutAs(tokenA, addrAId);
-
-        ResponseEntity<String> paymentResponse = requestPayment(orderId, "10.00", "CREDIT_CARD", tokenB);
-        assertThat(paymentResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-    }
-
     private String login(String email, String password) {
         LoginRequest request = new LoginRequest(email, password);
         HttpHeaders headers = new HttpHeaders();
@@ -216,12 +191,6 @@ public class OrderAuthorizationIT {
 
     private ResponseEntity<String> requestCancelOrder(Long orderId, String token) {
         return restTemplate.exchange(url("/api/orders/" + orderId), HttpMethod.DELETE, new HttpEntity<>(authHeaders(token)), String.class);
-    }
-
-    private ResponseEntity<String> requestPayment(Long orderId, String amount, String method, String token) {
-        PaymentRequest request = new PaymentRequest(orderId, amount, method);
-        HttpEntity<PaymentRequest> entity = new HttpEntity<>(request, authHeaders(token));
-        return restTemplate.postForEntity(url("/api/payments"), entity, String.class);
     }
 
     private HttpHeaders authHeaders(String token) {
