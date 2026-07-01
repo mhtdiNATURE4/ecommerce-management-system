@@ -1,0 +1,28 @@
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+build/
+.vercel/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+
+# Frontend Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs and Testing
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage/
+*.lcov
+*.localstorage
