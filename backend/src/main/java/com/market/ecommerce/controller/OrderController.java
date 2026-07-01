@@ -46,27 +46,10 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrdersDto());
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<org.springframework.data.domain.Page<OrderResponse>> getUserOrdersPaged(org.springframework.data.domain.Pageable pageable) {
-        return ResponseEntity.ok(orderService.getUserOrdersPaged(pageable));
-    }
-
-    @GetMapping("/{id}")
-    @PreAuthorize("@orderSecurity.isOrderOwner(#id)")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable @jakarta.validation.constraints.Positive Long id) {
-        return ResponseEntity.ok(orderService.getOrderByIdDto(id));
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<OrderResponse>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrdersDto());
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/all/paged")
-    public ResponseEntity<org.springframework.data.domain.Page<OrderResponse>> getAllOrdersPaged(org.springframework.data.domain.Pageable pageable) {
-        return ResponseEntity.ok(orderService.getAllOrdersPaged(pageable));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -88,10 +71,4 @@ public class OrderController {
         return ResponseEntity.ok(orderService.toDto(orderService.getOrderById(id)));
     }
 
-    @PreAuthorize("@orderSecurity.isOrderOwner(#id)")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> cancelOrder(@PathVariable @jakarta.validation.constraints.Positive Long id) {
-        orderService.cancel(id);
-        return ResponseEntity.noContent().build();
-    }
 }

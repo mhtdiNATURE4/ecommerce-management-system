@@ -24,38 +24,13 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
-        var created = productService.createProduct(request);
-        var dto = productService.toDto(created);
-        var location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(dto);
-    }
-
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProductsDto());
     }
 
-    // Backwards-compatible paged endpoint to support large datasets
-    @GetMapping("/paged")
-    public ResponseEntity<org.springframework.data.domain.Page<ProductResponse>> getAllProductsPaged(org.springframework.data.domain.Pageable pageable) {
-        return ResponseEntity.ok(productService.getAllProductsPaged(pageable));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable @jakarta.validation.constraints.Positive Long id) {
         return ResponseEntity.ok(productService.getProductByIdDto(id));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable @jakarta.validation.constraints.Positive Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
     }
 }

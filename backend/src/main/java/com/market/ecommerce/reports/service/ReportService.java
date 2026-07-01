@@ -9,8 +9,5 @@ public interface ReportService {
     List<ReportDefinitionResponse> listReports();
     ReportExecutionResponse runReport(Long id);
     List<ReportExecutionResponse> getHistory(Long reportId);
-    byte[] downloadExecution(Long executionId);
-    ReportExecutionResponse getExecution(Long executionId);
     List<ProductResponse> getLowStockProducts(int threshold);
-    ReportSummaryResponse summary();
 }

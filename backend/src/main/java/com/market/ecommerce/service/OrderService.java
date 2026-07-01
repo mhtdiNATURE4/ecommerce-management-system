@@ -240,39 +240,6 @@ public class OrderService {
         }
     }
 
-    // New: return safe DTO for order detail
-    @Transactional(readOnly = true)
-    public OrderResponse getOrderByIdDto(Long id) {
-        Order order = getOrderByIdAuthorized(id);
-
-        var items = order.getItems().stream()
-                .map(it -> new OrderItemResponse(
-                        it.getId(),
-                        it.getProduct().getId(),
-                        it.getProduct().getName(),
-                        it.getQuantity(),
-                        it.getPrice().toString()
-                ))
-                .collect(Collectors.toList());
-
-        return new OrderResponse(
-                order.getId(),
-                order.getTotalAmount() != null ? order.getTotalAmount().toString() : "0.00",
-                order.getStatus() != null ? order.getStatus().name() : "",
-                order.getShippingAddress() != null ? order.getShippingAddress().getId() : null,
-                order.getShippingAddress() != null ? new com.market.ecommerce.dto.AddressResponse(
-                        order.getShippingAddress().getId(),
-                        order.getShippingAddress().getStreet(),
-                        order.getShippingAddress().getCity(),
-                        order.getShippingAddress().getCountry(),
-                        order.getShippingAddress().getZipCode()
-                ) : null,
-                order.getUser() != null ? order.getUser().getName() : null,
-                order.getCreatedAt(),
-                items
-        );
-    }
-
     // Map single order to DTO
     public OrderResponse toDto(Order order) {
         var items = order.getItems().stream()
@@ -321,22 +288,6 @@ public class OrderService {
         return orders.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
-    public org.springframework.data.domain.Page<OrderResponse> getUserOrdersPaged(org.springframework.data.domain.Pageable pageable) {
-        String email = SecurityUtils.getCurrentUserEmail();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("المستخدم غير موجود"));
-
-        var page = orderRepository.findByUserId(user.getId(), pageable);
-        var ids = page.map(Order::getId).getContent();
-        var orders = ids.isEmpty() ? java.util.List.<Order>of() : orderRepository.findByIdInWithItems(ids);
-        // reorder fetched orders to match the page id ordering
-        var orderById = orders.stream().collect(Collectors.toMap(Order::getId, o -> o));
-        var ordered = ids.stream().map(orderById::get).filter(java.util.Objects::nonNull).toList();
-        var dtos = ordered.stream().map(this::toDto).collect(Collectors.toList());
-        return new org.springframework.data.domain.PageImpl<>(dtos, pageable, page.getTotalElements());
-    }
-
     // New: return list of DTOs for all orders (admin)
     @Transactional(readOnly = true)
     public List<OrderResponse> getAllOrdersDto() {
@@ -344,14 +295,4 @@ public class OrderService {
         return orders.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
-    public org.springframework.data.domain.Page<OrderResponse> getAllOrdersPaged(org.springframework.data.domain.Pageable pageable) {
-        var page = orderRepository.findAll(pageable);
-        var ids = page.map(Order::getId).getContent();
-        var orders = ids.isEmpty() ? java.util.List.<Order>of() : orderRepository.findByIdInWithItems(ids);
-        var orderById = orders.stream().collect(Collectors.toMap(Order::getId, o -> o));
-        var ordered = ids.stream().map(orderById::get).filter(java.util.Objects::nonNull).toList();
-        var dtos = ordered.stream().map(this::toDto).collect(Collectors.toList());
-        return new org.springframework.data.domain.PageImpl<>(dtos, pageable, page.getTotalElements());
-    }
 }

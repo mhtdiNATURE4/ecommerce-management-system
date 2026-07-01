@@ -219,29 +219,4 @@ public class ReportServiceImpl implements ReportService {
         return productService.getLowStockProductsDto(threshold);
     }
 
-    @Override
-    public byte[] downloadExecution(Long executionId) {
-        ReportExecution exec = executionRepository.findById(executionId).orElseThrow();
-        try {
-            Path p = Path.of(exec.getStoragePath());
-            return Files.readAllBytes(p);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public ReportExecutionResponse getExecution(Long executionId) {
-        ReportExecution exec = executionRepository.findById(executionId).orElseThrow();
-        return new ReportExecutionResponse(exec.getId(), exec.getReport().getId(), exec.getStatus(), exec.getCreatedAt(), exec.getCompletedAt(), exec.getFileName(), exec.getFileSize());
-    }
-
-    @Override
-    public ReportSummaryResponse summary() {
-        long successful = executionRepository.findAll().stream().filter(e -> "SUCCESS".equals(e.getStatus())).count();
-        long failed = executionRepository.findAll().stream().filter(e -> "FAILED".equals(e.getStatus())).count();
-        LocalDateTime last = executionRepository.findAll().stream().map(ReportExecution::getCompletedAt).filter(x -> x != null).max(LocalDateTime::compareTo).orElse(null);
-        double successRate = (successful + failed) == 0 ? 0.0 : (double) successful / (successful + failed);
-        return new ReportSummaryResponse(null, successful, failed, last, null, successRate);
-    }
 }

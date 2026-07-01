@@ -24,25 +24,8 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    // تم إضافة حماية الصلاحيات لضمان أن الإدارة فقط من تستطيع إضافة قسم
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest request) {
-        CategoryResponse res = categoryService.createCategory(request);
-        var location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(res.id())
-                .toUri();
-        return ResponseEntity.created(location).body(res);
-    }
-
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
-    }
-
-    @GetMapping("/paged")
-    public ResponseEntity<org.springframework.data.domain.Page<CategoryResponse>> getAllCategoriesPaged(org.springframework.data.domain.Pageable pageable) {
-        return ResponseEntity.ok(categoryService.getAllCategoriesPaged(pageable));
     }
 }

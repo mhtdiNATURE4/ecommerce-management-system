@@ -27,35 +27,8 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Product createProduct(ProductRequest request) {
-
-        Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "القسم غير موجود برقم معرف: "
-                                        + request.categoryId()
-                        )
-                );
-
-        Product product = Product.builder()
-                .name(request.name().trim())
-                .description(request.description())
-                .price(request.price())
-                .stock(request.stock())
-                .imageUrl(request.imageUrl())
-                .category(category)
-                .build();
-
-        return productRepository.save(product);
-    }
-
     public List<Product> getAllProducts() {
         return productRepository.findAllWithCategory();
-    }
-
-    @Transactional(readOnly = true)
-    public org.springframework.data.domain.Page<ProductResponse> getAllProductsPaged(org.springframework.data.domain.Pageable pageable) {
-        return productRepository.findAllWithCategory(pageable).map(this::toDto);
     }
 
     public Product getProductById(Long id) {
@@ -66,17 +39,6 @@ public class ProductService {
                                 "المنتج غير موجود برقم معرف: " + id
                         )
                 );
-    }
-
-    public void deleteProduct(Long id) {
-
-        if (!productRepository.existsById(id)) {
-            throw new ResourceNotFoundException(
-                    "لا يمكن الحذف، المنتج غير موجود برقم معرف: " + id
-            );
-        }
-
-        productRepository.deleteById(id);
     }
 
     /* DTO mapping helpers */

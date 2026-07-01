@@ -22,30 +22,9 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public CategoryResponse createCategory(CategoryRequest request) {
-
-        String name = request.name().trim();
-
-        if (categoryRepository.existsByName(name)) {
-            throw new BadRequestException("هذا القسم موجود مسبقاً");
-        }
-
-        Category category = Category.builder()
-                .name(name)
-                .build();
-
-        Category saved = categoryRepository.save(category);
-        return toDto(saved);
-    }
-
     @Transactional(readOnly = true)
     public List<CategoryResponse> getAllCategories() {
         return categoryRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public Page<CategoryResponse> getAllCategoriesPaged(Pageable pageable) {
-        return categoryRepository.findAll(pageable).map(this::toDto);
     }
 
     private CategoryResponse toDto(Category category) {

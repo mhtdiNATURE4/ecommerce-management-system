@@ -45,20 +45,4 @@ public class ReportsController {
         return reportService.getHistory(id);
     }
 
-    @GetMapping("/{id}/download")
-    public ResponseEntity<byte[]> download(@PathVariable Long id) {
-        ReportExecutionResponse exec = reportService.getExecution(id);
-        byte[] data = reportService.downloadExecution(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        String filename = exec.fileName() != null ? exec.fileName() : "report-download";
-        headers.setContentDisposition(ContentDisposition.attachment().filename(filename).build());
-        headers.setContentLength(data.length);
-        return new ResponseEntity<>(data, headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/summary")
-    public ReportSummaryResponse summary() {
-        return reportService.summary();
-    }
 }
