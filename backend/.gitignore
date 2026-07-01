@@ -1,33 +1,20 @@
-HELP.md
+# Java / Maven
 target/
+*.class
+*.jar
+*.war
+*.ear
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+surefire-reports/
+generated-sources/
+generated-test-sources/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Backend Environment Variables & Secrets
+.env
+.env.local
+*.pem
+*.key
+*.p12
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
+# Testing
+.pytest_cache/
