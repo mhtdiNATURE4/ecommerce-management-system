@@ -86,6 +86,20 @@ function OrdersPage() {
     }
   }
 
+  const orderedHistory = [...orders].sort((a, b) => {
+    const aTime = new Date(a.createdAt || 0).getTime();
+    const bTime = new Date(b.createdAt || 0).getTime();
+
+    if (Number.isNaN(aTime) && Number.isNaN(bTime)) {
+      return (a.id || 0) - (b.id || 0);
+    }
+
+    if (Number.isNaN(aTime)) return 1;
+    if (Number.isNaN(bTime)) return -1;
+
+    return aTime - bTime;
+  });
+
   if (loading) {
     return (
       <div className="page-shell">
@@ -142,11 +156,11 @@ function OrdersPage() {
         <h2 className="page-title">Your Orders</h2>
 
         <div className="stack-sm">
-          {orders.map((order, index) => (
+          {orderedHistory.map((order, index) => (
             <div key={order.id} className="panel-card" style={{ padding: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ display: 'grid', gap: '0.4rem' }}>
-                  <div style={{ fontWeight: 700 }}>Order #{order.id ?? order.orderNumber ?? (index + 1)}</div>
+                  <div style={{ fontWeight: 700 }}>Order #{index + 1}</div>
                   <div className="muted" style={{ fontSize: '0.95rem' }}>
                     Date: {formatDate(order.createdAt)}
                   </div>

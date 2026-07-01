@@ -216,17 +216,17 @@ function AnalyticsPage() {
                           <span>{rule.productName}</span>
                         </div>
                       </td>
-                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)' }}>
+                      <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border-light)', verticalAlign: 'top' }}>
                         {rule.recommendations.length === 0 ? '—' : (
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.45rem', minWidth: '220px' }}>
                             {rule.recommendations.map((item, itemIndex) => (
-                              <div key={`${item?.productName || 'recommendation'}-${itemIndex}`} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.55rem', background: 'var(--surface-muted)', borderRadius: '999px' }}>
+                              <div key={`${item?.productName || 'recommendation'}-${itemIndex}`} style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', padding: '0.4rem 0.6rem', background: 'var(--surface-muted)', borderRadius: '10px', minWidth: 0 }}>
                                 <img
                                   src={item.productImage || 'https://picsum.photos/seed/default/600/400'}
                                   alt={item?.productName || 'Recommended product'}
-                                  style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px' }}
+                                  style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
                                 />
-                                <span>{item?.productName || 'Unknown'}</span>
+                                <span style={{ fontSize: '0.92rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item?.productName || 'Unknown'}</span>
                               </div>
                             ))}
                           </div>
