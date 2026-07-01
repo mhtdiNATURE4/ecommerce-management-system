@@ -41,6 +41,16 @@ mvn -DskipTests spring-boot:run -f backend/pom.xml
 
 Swagger UI and docs are only publicly accessible when running with the `dev` or `local` profiles (or when `SecurityConfig` is modified).
 
+## Flyway / database migrations
+Use the existing [flyway.properties](flyway.properties) configuration for local Flyway operations. The generic commands are:
+
+```bash
+mvn flyway:info
+mvn flyway:migrate
+```
+
+These commands use the settings from [flyway.properties](flyway.properties), so no machine-specific scripts are required.
+
 ## Notes
 - The application performs a startup check to ensure a JWT secret is configured in non-dev environments to avoid accidental insecure deployments.
 - If you need to access docs in non-dev environments, use a valid authenticated token (`POST /api/auth/login`) and include `Authorization: Bearer <token>` when requesting `/api-docs`.
